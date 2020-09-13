@@ -148,14 +148,131 @@ fetch_commons_memberships_raw <- function() {
 #     memberships
 # }
 
+#' Fetch government roles for all MPs
+#'
+#' @keywords internal
 
+fetch_mps_government_roles_raw <- function() {
 
+    # Fetch raw government roles data
+    government_roles <- fetch_government_roles_raw(house = HOUSE_COMMONS)
+
+    # Remove MPs that have never held a government role
+    government_roles <- dplyr::filter(government_roles, !GovernmentPosts == "NULL")
+
+    # Define a function to extract government roles for each MP
+    process_government_roles <- function(government_roles) {
+        government_roles_raw <- purrr::map(government_roles$`@Member_Id`, function(member) {
+            mnis_id <- member
+            government_roles_raw <- dplyr::filter(government_roles, `@Member_Id` == mnis_id)
+            government_roles_raw <- purrr::map_df(government_roles_raw$GovernmentPosts$GovernmentPost, function(member) {
+                government_roles_raw <- tibble::tibble(
+                    government_role_mnis_id = member$`@Id`,
+                    government_role_name = member$Name,
+                    government_role_incumbency_start_date = member$StartDate,
+                    government_role_incumbency_end_date = as.character(member$EndDate),
+                    government_role_unpaid = member$IsUnpaid)
+            })
+            government_roles_raw$mnis_id <- mnis_id
+            government_roles_raw
+        })
+        dplyr::bind_rows(government_roles_raw)
+    }
+
+    # Call process function and tidy
+    government_roles <- process_government_roles(government_roles)
+    government_roles$government_role_incumbency_start_date <- as.Date(government_roles$government_role_incumbency_start_date)
+    government_roles$government_role_incumbency_end_date <- as.Date(government_roles$government_role_incumbency_end_date)
+
+    # Fetch basic details
+    mps <- fetch_mps_raw() %>%
+        dplyr::select(
+            mnis_id,
+            given_name,
+            family_name,
+            display_name)
+
+    # Join tables and tidy
+    government_roles <- dplyr::left_join(government_roles, mps, by = "mnis_id") %>%
+        dplyr::select(
+            mnis_id,
+            given_name,
+            family_name,
+            display_name,
+            dplyr::everything())
+
+    # Cache memberships
+    assign(CACHE_MPS_GOVERNMENT_ROLES_RAW, government_roles, envir = cache)
+
+    # Return
+    government_roles
+}
+
+#' Fetch opposition roles for all MPs
+#'
+#' @keywords internal
+
+fetch_mps_opposition_roles_raw <- function() {
+
+    # Fetch raw opposition roles data
+    opposition_roles <- fetch_opposition_roles_raw(house = HOUSE_COMMONS)
+
+    # Remove MPs that have never held a opposition role
+    opposition_roles <- dplyr::filter(opposition_roles, !OppositionPosts == "NULL")
+
+    # Define a function to extract opposition roles for each MP
+    process_opposition_roles <- function(opposition_roles) {
+        opposition_roles_raw <- purrr::map(opposition_roles$`@Member_Id`, function(member) {
+            mnis_id <- member
+            opposition_roles_raw <- dplyr::filter(opposition_roles, `@Member_Id` == mnis_id)
+            opposition_roles_raw <- purrr::map_df(opposition_roles_raw$OppositionPosts$OppositionPost, function(member) {
+                opposition_roles_raw <- tibble::tibble(
+                    opposition_role_mnis_id = member$`@Id`,
+                    opposition_role_name = member$Name,
+                    opposition_role_incumbency_start_date = member$StartDate,
+                    opposition_role_incumbency_end_date = as.character(member$EndDate),
+                    opposition_role_unpaid = member$IsUnpaid)
+            })
+            opposition_roles_raw$mnis_id <- mnis_id
+            opposition_roles_raw
+        })
+        dplyr::bind_rows(opposition_roles_raw)
+    }
+
+    # Call process function and tidy
+    opposition_roles <- process_opposition_roles(opposition_roles)
+    opposition_roles$opposition_role_incumbency_start_date <- as.Date(opposition_roles$opposition_role_incumbency_start_date)
+    opposition_roles$opposition_role_incumbency_end_date <- as.Date(opposition_roles$opposition_role_incumbency_end_date)
+
+    # Fetch basic details
+    mps <- fetch_mps_raw() %>%
+        dplyr::select(
+            mnis_id,
+            given_name,
+            family_name,
+            display_name)
+
+    # Join tables and tidy
+    opposition_roles <- dplyr::left_join(opposition_roles, mps, by = "mnis_id") %>%
+        dplyr::select(
+            mnis_id,
+            given_name,
+            family_name,
+            display_name,
+            dplyr::everything())
+
+    # Cache memberships
+    assign(CACHE_MPS_OPPOSITION_ROLES_RAW, opposition_roles, envir = cache)
+
+    # Return
+    opposition_roles
+}
 
 # Main MPs API ----------------------------------------------------------------
 
 #' Fetch key details for all MPs
 #'
-#' \code{fetch_mps} fetches data from the Members Names data platform showing
+#' \code{fetch_mps} fetches data from the Members Names platform showing
 #' key details about each MP, with one row per MP.
 #'
 #' The from_date and to_date arguments can be used to filter MPs returned based
@@ -214,7 +331,7 @@ fetch_mps <- function(from_date = NA, to_date = NA, on_date = NA) {
 
 #' Fetch Commons memberships for all MPs
 #'
-#' \code{fetch_commons_memberships} fetches data from the Members Names data platform
+#' \code{fetch_commons_memberships} fetches data from the Members Names platform
 #' showing Commons memberships for each MP. The memberships are processed to
 #' impose consistent rules on the start and end dates for memberships. A
 #' membership with an NA end date is still open.
@@ -302,7 +419,7 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 
 #' Fetch party memberships for all MPs
 #'
-#' \code{fetch_mps_party_memberships} fetches data from the Members Names data platform
+#' \code{fetch_mps_party_memberships} fetches data from the Members Names platform
 #' showing party memberships for each MP. The memberships are processed and
 #' merged so that there is only one row for each period of continuous
 #' membership within the same party. A membership with an NA end date is still
@@ -428,3 +545,182 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 #
 # }
 
+#' Fetch government roles for all MPs
+#'
+#' \code{fetch_mps_government_roles} fetches data from the Members Names platform
+#' showing government roles for each MP.
+#'
+#' The from_date and to_date arguments can be used to filter the roles
+#' returned. The on_date argument is a convenience that sets the from_date and
+#' to_date to the same given date. The on_date has priority: if the on_date is
+#' set, the from_date and to_date are ignored.
+#'
+#' The while_mp argument can be used to filter the roles to include only those
+#' that occurred during the period when each individual was an MP.
+#'
+#' The filtering is inclusive: a role is returned if any part of it falls
+#' within the period specified with the from and to dates.
+#'
+#' Note that a role with an NA end date is still open.
+#'
+#' @param from_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. '2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis of
+#'   the from_date.
+#' @param to_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the to_date.
+#' @param on_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the on_date.
+#' @param while_mp A boolean indicating whether to filter the government roles
+#' to include only those roles that were held while each individual was serving
+#' as an MP. The default value is TRUE.
+#' @return A tibble of government roles for each MP, with one row per
+#'   government role.
+#' @export
+
+fetch_mps_government_roles <- function(
+    from_date = NA,
+    to_date = NA,
+    on_date = NA,
+    while_mp = TRUE) {
+
+    # Set from_date and to_date to on_date if set
+    if (!is.na(on_date)) {
+        from_date <- on_date
+        to_date <- on_date
+    }
+
+    # Check if MPs government roles raw is cached and fetch if not
+    if (!exists(CACHE_MPS_GOVERNMENT_ROLES_RAW, envir = cache)) {
+        government_roles <- fetch_mps_government_roles_raw()
+    } else {
+        government_roles <- get(CACHE_MPS_GOVERNMENT_ROLES_RAW, envir = cache)
+    }
+
+    # Filter on dates if requested
+    if (!is.na(from_date) || !is.na(to_date)) {
+        government_roles <- filter_dates(
+            government_roles,
+            start_col = "government_role_incumbency_start_date",
+            end_col = "government_role_incumbency_end_date",
+            from_date = from_date,
+            to_date = to_date)
+    }
+
+    # Filter on Commons memberships if requested
+    if (while_mp) {
+        commons_memberships <- fetch_commons_memberships()
+        government_roles <- filter_memberships(
+            tm = government_roles,
+            fm = commons_memberships,
+            tm_id_col = "government_role_mnis_id",
+            tm_start_col = "government_role_incumbency_start_date",
+            tm_end_col = "government_role_incumbency_end_date",
+            fm_start_col = "seat_incumbency_start_date",
+            fm_end_col = "seat_incumbency_end_date",
+            join_col = "mnis_id")
+    }
+
+    # Tidy up and return
+    government_roles %>%
+        dplyr::arrange(
+            .data$family_name,
+            .data$government_role_incumbency_start_date) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate_if(is.character, stringr::str_trim)
+
+}
+
+#' Fetch opposition roles for all MPs
+#'
+#' \code{fetch_mps_opposition_roles} fetches data from the Members Names platform
+#' showing opposition roles for each MP.
+#'
+#' The from_date and to_date arguments can be used to filter the roles
+#' returned. The on_date argument is a convenience that sets the from_date and
+#' to_date to the same given date. The on_date has priority: if the on_date is
+#' set, the from_date and to_date are ignored.
+#'
+#' The while_mp argument can be used to filter the roles to include only those
+#' that occurred during the period when each individual was an MP.
+#'
+#' The filtering is inclusive: a role is returned if any part of it falls
+#' within the period specified with the from and to dates.
+#'
+#' Note that a role with an NA end date is still open.
+#'
+#' @param from_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. '2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis of
+#'   the from_date.
+#' @param to_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the to_date.
+#' @param on_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the on_date.
+#' @param while_mp A boolean indicating whether to filter the opposition roles
+#' to include only those roles that were held while each individual was serving
+#' as an MP. The default value is TRUE.
+#' @return A tibble of opposition roles for each MP, with one row per
+#'   opposition role.
+#' @export
+
+fetch_mps_opposition_roles <- function(
+    from_date = NA,
+    to_date = NA,
+    on_date = NA,
+    while_mp = TRUE) {
+
+    # Set from_date and to_date to on_date if set
+    if (!is.na(on_date)) {
+        from_date <- on_date
+        to_date <- on_date
+    }
+
+    # Check if MPs opposition roles raw is cached and fetch if not
+    if (!exists(CACHE_MPS_OPPOSITION_ROLES_RAW, envir = cache)) {
+        opposition_roles <- fetch_mps_opposition_roles_raw()
+    } else {
+        opposition_roles <- get(CACHE_MPS_OPPOSITION_ROLES_RAW, envir = cache)
+    }
+
+    # Filter on dates if requested
+    if (!is.na(from_date) || !is.na(to_date)) {
+        opposition_roles <- filter_dates(
+            opposition_roles,
+            start_col = "opposition_role_incumbency_start_date",
+            end_col = "opposition_role_incumbency_end_date",
+            from_date = from_date,
+            to_date = to_date)
+    }
+
+    # Filter on Commons memberships if requested
+    if (while_mp) {
+        commons_memberships <- fetch_commons_memberships()
+        opposition_roles <- filter_memberships(
+            tm = opposition_roles,
+            fm = commons_memberships,
+            tm_id_col = "opposition_role_mnis_id",
+            tm_start_col = "opposition_role_incumbency_start_date",
+            tm_end_col = "opposition_role_incumbency_end_date",
+            fm_start_col = "seat_incumbency_start_date",
+            fm_end_col = "seat_incumbency_end_date",
+            join_col = "mnis_id")
+    }
+
+    # Tidy up and return
+    opposition_roles %>%
+        dplyr::arrange(
+            .data$family_name,
+            .data$opposition_role_incumbency_start_date) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate_if(is.character, stringr::str_trim)
+
+}
