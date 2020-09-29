@@ -1,16 +1,31 @@
 ### Utility functions used across the package
 
-# API functions ---------------------------------------------------------------
+# API query funcitons ---------------------------------------------------------
+
+#' Create query string
+#'
+#' @keywords internal
+
+create_query <- function(house, data_output) {
+   stringr::str_glue(
+      "{MNIS_API}House={house}|Membership=all/{data_output}")
+}
 
 #' Fetch data from MNIS based on given query
 #'
 #' @keywords internal
 
-fetch_query_data <- function(query) {
+fetch_query_data <- function(house, data_output) {
+
+   # Create query
+   query <- create_query(house, data_output)
+
+   # Fetch data
    query_data <- httr::GET(query, httr::accept_json())
    check_query_status(query_data$status)
    query_data <- httr::content(query_data, as = "text")
    query_data <- suppressWarnings(jsonlite::fromJSON(query_data))
+   query_data$Members$Member
 }
 
 # Data handling functions -----------------------------------------------------
@@ -32,6 +47,45 @@ process_missing_values <- function(data, column) {
 process_member_age <- function(from, to) {
    to <- tidyr::replace_na(to, Sys.Date())
    floor(lubridate::decimal_date(to) - lubridate::decimal_date(from))
+}
+
+#' Extract data output
+#'
+#' @keywords internal
+
+extract_data_output <- function(data_output, col_section_a, col_section_b) {
+   data_output <- purrr::map_df(data_output$`@Member_Id`, function(member) {
+      mnis_id <- member
+      data_output <- dplyr::filter(data_output, `@Member_Id` == mnis_id)
+      data_output <- purrr::pluck(data_output[[{{ col_section_a }}]][[{{ col_section_b }}]])
+      data_output[[1]][["mnis_id"]] <- mnis_id
+      data_output
+   })
+   tibble::as_tibble(data_output)
+}
+
+#' Combine basic MP data with output table
+#'
+#' @keywords internal
+
+process_mps_output <- function(output_table) {
+
+   # Fetch basic details
+   mps <- fetch_mps_raw() %>%
+      dplyr::select(
+         mnis_id,
+         given_name,
+         family_name,
+         display_name)
+
+   # Join tables and tidy
+   output <- dplyr::left_join(output_table, mps, by = "mnis_id") %>%
+      dplyr::select(
+         mnis_id,
+         given_name,
+         family_name,
+         display_name,
+         dplyr::everything())
 }
 
 # Date handling functions -----------------------------------------------------
