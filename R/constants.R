@@ -22,6 +22,15 @@ CACHE_MPS_GOVERNMENT_ROLES_RAW <- "mps_government_roles"
 CACHE_MPS_OPPOSITION_ROLES_RAW <- "mps_opposition_roles"
 CACHE_MPS_PARLIAMENTARY_ROLES_RAW <- "mps_parliamentary_roles"
 CACHE_MPS_MAIDEN_SPEECHES_RAW <- "mps_maiden_speeches"
+CACHE_MPS_OTHER_PARLIAMENTS_RAW <- "mps_other_parliaments"
+CACHE_MPS_CONTESTED_ELECTIONS_RAW <- "mps_contested_elections"
+
+CACHE_LORDS_MEMBERSHIPS_RAW <- "lords_memberships"
+CACHE_LORDS_GOVERNMENT_ROLES_RAW <- "lords_government_roles"
+CACHE_LORDS_OPPOSITION_ROLES_RAW <- "lords_opposition_roles"
+CACHE_LORDS_PARLIAMENTARY_ROLES_RAW <- "lords_parliamentary_roles"
+CACHE_LORDS_MAIDEN_SPEECHES_RAW <- "lords_maiden_speeches"
+CACHE_LORDS_OTHER_PARLIAMENTS_RAW <- "lords_other_parliaments"
 
 # Library call - move to namespace --------------------------------------------
 

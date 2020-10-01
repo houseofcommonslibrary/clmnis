@@ -1,18 +1,18 @@
-### Functions for downloading and analysing data on MPs
+### Functions for downloading and analysing data on Lords
 
-#' Fetch key details for all MPs
+#' Fetch key details for all Lords
 #'
-#' \code{fetch_mps} fetches data from the Members Names platform showing
-#' key details about each MP, with one row per MP.
+#' \code{fetch_lords} fetches data from the Members Names platform showing
+#' key details about each Lord, with one row per Lord.
 #'
-#' The from_date and to_date arguments can be used to filter MPs returned based
-#' on the dates of their Commons memberships. The on_date argument is a
+#' The from_date and to_date arguments can be used to filter Lords returned based
+#' on the dates of their Lords memberships. The on_date argument is a
 #' convenience that sets the from_date and to_date to the same given date. The
 #' on_date has priority: if the on_date is set, the from_date and to_date are
 #' ignored.
 #'
-#' The filtering is inclusive: an MP is returned if any part of one of their
-#' Commons memberships falls within the period specified with the from and to
+#' The filtering is inclusive: a Lord is returned if any part of one of their
+#' Lords memberships falls within the period specified with the from and to
 #' dates.
 #'
 #' @param from_date A string or Date representing a date. If a string is used
@@ -27,10 +27,10 @@
 #'   it should specify the date in ISO 8601 date format e.g. '2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis of
 #'   the on_date.
-#' @return A tibble of key details for each MP, with one row per MP.
+#' @return A tibble of key details for each Lord, with one row per Lord.
 #' @export
 
-fetch_mps <- function(from_date = NA, to_date = NA, on_date = NA) {
+fetch_lords <- function(from_date = NA, to_date = NA, on_date = NA) {
 
     # Set from_date and to_date to on_date if set
     if (!is.na(on_date)) {
@@ -39,30 +39,30 @@ fetch_mps <- function(from_date = NA, to_date = NA, on_date = NA) {
     }
 
     # Fetch key details
-    mps <- fetch_mps_raw()
+    lords <- fetch_lords_raw()
 
     # Filter on dates if requested
     if (!is.na(from_date) || !is.na(to_date)) {
-        commons_memberships <- fetch_commons_memberships()
+        lords_memberships <- fetch_lords_memberships()
         matching_memberships <- filter_dates(
-            commons_memberships,
+            lords_memberships,
             start_col = "seat_incumbency_start_date",
             end_col = "seat_incumbency_end_date",
             from_date = from_date,
             to_date = to_date)
-        mps <- mps %>%
+        lords <- lords %>%
             dplyr::filter(.data$mnis_id %in% matching_memberships$mnis_id)
     }
 
     # Tidy up and return
-    mps %>% dplyr::arrange(.data$family_name) %>%
+    lords %>% dplyr::arrange(.data$family_name) %>%
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
 
-#' Fetch Commons memberships for all MPs
+#' Fetch Lords memberships for all Lords
 #'
-#' \code{fetch_commons_memberships} fetches data from the Members Names platform
-#' showing Commons memberships for each MP. The memberships are processed to
+#' \code{fetch_lords_memberships} fetches data from the Members Names platform
+#' showing Lords memberships for each Lord. The memberships are processed to
 #' impose consistent rules on the start and end dates for memberships. A
 #' membership with an NA end date is still open.
 #'
@@ -88,11 +88,11 @@ fetch_mps <- function(from_date = NA, to_date = NA, on_date = NA) {
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @return A tibble of Commons memberships for each MP, with one row per
-#'   Commons membership.
+#' @return A tibble of Lords memberships for each Lord, with one row per
+#'   Lords membership.
 #' @export
 
-fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA) {
+fetch_lords_memberships <- function(from_date = NA, to_date = NA, on_date = NA) {
 
     # Set from_date and to_date to on_date if set
     if (!is.na(on_date)) {
@@ -101,10 +101,10 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
     }
 
     # Check cache
-    if (!exists(CACHE_COMMONS_MEMBERSHIPS_RAW, envir = cache)) {
-        commons_memberships <- fetch_commons_memberships_raw()
+    if (!exists(CACHE_LORDS_MEMBERSHIPS_RAW, envir = cache)) {
+        lords_memberships <- fetch_lords_memberships_raw()
     } else {
-        commons_memberships <- get(CACHE_COMMONS_MEMBERSHIPS_RAW, envir = cache)
+        lords_memberships <- get(CACHE_LORDS_MEMBERSHIPS_RAW, envir = cache)
     }
 
     # Define a function to adjust end dates if they are incorrect
@@ -120,17 +120,17 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 
     # Calculate the adjusted end dates
     adj_ends <- purrr::map_dbl(
-        commons_memberships$seat_incumbency_end_date,
+        lords_memberships$seat_incumbency_end_date,
         adjust_date,
         general_elections)
 
     # Cast back to dates and reassign
-    commons_memberships$seat_incumbency_end_date <- cast_date(adj_ends)
+    lords_memberships$seat_incumbency_end_date <- cast_date(adj_ends)
 
     # Filter on dates if requested
     if (!is.na(from_date) || !is.na(to_date)) {
-        commons_memberships <- filter_dates(
-            commons_memberships,
+        lords_memberships <- filter_dates(
+            lords_memberships,
             start_col = "seat_incumbency_start_date",
             end_col = "seat_incumbency_end_date",
             from_date = from_date,
@@ -138,7 +138,7 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
     }
 
     # Tidy up and return
-    commons_memberships %>%
+    lords_memberships %>%
         dplyr::arrange(
             .data$family_name,
             .data$seat_incumbency_start_date) %>%
@@ -147,10 +147,10 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 
 }
 
-#' Fetch other parliament memberships for all MPs
+#' Fetch other parliament memberships for all Lords
 #'
-#' \code{fetch_mps_other_parliaments} fetches data from the Members Names platform
-#' showing other parliamentary memberships for each MP.
+#' \code{fetch_lords_other_parliaments} fetches data from the Members Names platform
+#' showing other parliamentary memberships for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the speeches
 #' returned. The on_date argument is a convenience that sets the from_date and
@@ -173,11 +173,11 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 
-#' @return A tibble of other parliamentary incumbencies for each MP, with one
+#' @return A tibble of other parliamentary incumbencies for each Lord, with one
 #' row per membership.
 #' @export
 
-fetch_mps_other_parliaments <- function(
+fetch_lords_other_parliaments <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA) {
@@ -189,10 +189,10 @@ fetch_mps_other_parliaments <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_OTHER_PARLIAMENTS_RAW, envir = cache)) {
-        other_parliaments <- fetch_mps_other_parliaments_raw()
+    if (!exists(CACHE_LORDS_OTHER_PARLIAMENTS_RAW, envir = cache)) {
+        other_parliaments <- fetch_lords_other_parliaments_raw()
     } else {
-        other_parliaments <- get(CACHE_MPS_OTHER_PARLIAMENTS_RAW, envir = cache)
+        other_parliaments <- get(CACHE_LORDS_OTHER_PARLIAMENTS_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -214,10 +214,10 @@ fetch_mps_other_parliaments <- function(
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
 
-#' Fetch contested elections for all MPs
+#' Fetch contested elections for all Lords
 #'
-#' \code{fetch_mps_contested_elections} fetches data from the Members Names
-#' platform showing contested elections for each MP.
+#' \code{fetch_lords_contested_elections} fetches data from the Members Names
+#' platform showing contested elections for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the contested
 #' elections returned. The on_date argument is a convenience that sets the
@@ -240,11 +240,11 @@ fetch_mps_other_parliaments <- function(
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 
-#' @return A tibble of contested elections for each MP, with one row per
+#' @return A tibble of contested elections for each Lord, with one row per
 #' contested election.
 #' @export
 
-fetch_mps_contested_elections <- function(
+fetch_lords_contested_elections <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA) {
@@ -256,10 +256,10 @@ fetch_mps_contested_elections <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_CONTESTED_ELECTIONS_RAW, envir = cache)) {
-        contested_elections <- fetch_mps_contested_elections_raw()
+    if (!exists(CACHE_LORDS_CONTESTED_ELECTIONS_RAW, envir = cache)) {
+        contested_elections <- fetch_lords_contested_elections_raw()
     } else {
-        contested_elections <- get(CACHE_MPS_CONTESTED_ELECTIONS_RAW, envir = cache)
+        contested_elections <- get(CACHE_LORDS_CONTESTED_ELECTIONS_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -281,18 +281,18 @@ fetch_mps_contested_elections <- function(
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
 
-#' Fetch government roles for all MPs
+#' Fetch government roles for all Lords
 #'
-#' \code{fetch_mps_government_roles} fetches data from the Members Names platform
-#' showing government roles for each MP.
+#' \code{fetch_lords_government_roles} fetches data from the Members Names platform
+#' showing government roles for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the roles
 #' returned. The on_date argument is a convenience that sets the from_date and
 #' to_date to the same given date. The on_date has priority: if the on_date is
 #' set, the from_date and to_date are ignored.
 #'
-#' The while_mp argument can be used to filter the roles to include only those
-#' that occurred during the period when each individual was an MP.
+#' The while_lord argument can be used to filter the roles to include only those
+#' that occurred during the period when each individual was a Lord.
 #'
 #' The filtering is inclusive: a role is returned if any part of it falls
 #' within the period specified with the from and to dates.
@@ -311,18 +311,18 @@ fetch_mps_contested_elections <- function(
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @param while_mp A boolean indicating whether to filter the government roles
+#' @param while_lord A boolean indicating whether to filter the government roles
 #' to include only those roles that were held while each individual was serving
-#' as an MP. The default value is TRUE.
-#' @return A tibble of government roles for each MP, with one row per
+#' as a Lord. The default value is TRUE.
+#' @return A tibble of government roles for each Lord, with one row per
 #'   government role.
 #' @export
 
-fetch_mps_government_roles <- function(
+fetch_lords_government_roles <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA,
-    while_mp = TRUE) {
+    while_lord = TRUE) {
 
     # Set from_date and to_date to on_date if set
     if (!is.na(on_date)) {
@@ -331,10 +331,10 @@ fetch_mps_government_roles <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_GOVERNMENT_ROLES_RAW, envir = cache)) {
-        government_roles <- fetch_mps_government_roles_raw()
+    if (!exists(CACHE_LORDS_GOVERNMENT_ROLES_RAW, envir = cache)) {
+        government_roles <- fetch_lords_government_roles_raw()
     } else {
-        government_roles <- get(CACHE_MPS_GOVERNMENT_ROLES_RAW, envir = cache)
+        government_roles <- get(CACHE_LORDS_GOVERNMENT_ROLES_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -348,11 +348,11 @@ fetch_mps_government_roles <- function(
     }
 
     # Filter on memberships if requested
-    if (while_mp) {
-        commons_memberships <- fetch_commons_memberships()
+    if (while_lord) {
+        lords_memberships <- fetch_lords_memberships()
         government_roles <- filter_memberships(
             tm = government_roles,
-            fm = commons_memberships,
+            fm = lords_memberships,
             tm_id_col = "government_role_mnis_id",
             tm_start_col = "government_role_incumbency_start_date",
             tm_end_col = "government_role_incumbency_end_date",
@@ -371,18 +371,18 @@ fetch_mps_government_roles <- function(
 
 }
 
-#' Fetch opposition roles for all MPs
+#' Fetch opposition roles for all Lords
 #'
-#' \code{fetch_mps_opposition_roles} fetches data from the Members Names platform
-#' showing opposition roles for each MP.
+#' \code{fetch_lords_opposition_roles} fetches data from the Members Names platform
+#' showing opposition roles for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the roles
 #' returned. The on_date argument is a convenience that sets the from_date and
 #' to_date to the same given date. The on_date has priority: if the on_date is
 #' set, the from_date and to_date are ignored.
 #'
-#' The while_mp argument can be used to filter the roles to include only those
-#' that occurred during the period when each individual was an MP.
+#' The while_lord argument can be used to filter the roles to include only those
+#' that occurred during the period when each individual was a Lord.
 #'
 #' The filtering is inclusive: a role is returned if any part of it falls
 #' within the period specified with the from and to dates.
@@ -401,18 +401,18 @@ fetch_mps_government_roles <- function(
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @param while_mp A boolean indicating whether to filter the opposition roles
+#' @param while_lord A boolean indicating whether to filter the opposition roles
 #' to include only those roles that were held while each individual was serving
-#' as an MP. The default value is TRUE.
-#' @return A tibble of opposition roles for each MP, with one row per
+#' as a Lord. The default value is TRUE.
+#' @return A tibble of opposition roles for each Lord, with one row per
 #'   opposition role.
 #' @export
 
-fetch_mps_opposition_roles <- function(
+fetch_lord_opposition_roles <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA,
-    while_mp = TRUE) {
+    while_lord = TRUE) {
 
     # Set from_date and to_date to on_date if set
     if (!is.na(on_date)) {
@@ -421,10 +421,10 @@ fetch_mps_opposition_roles <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_OPPOSITION_ROLES_RAW, envir = cache)) {
-        opposition_roles <- fetch_mps_opposition_roles_raw()
+    if (!exists(CACHE_LORDS_OPPOSITION_ROLES_RAW, envir = cache)) {
+        opposition_roles <- fetch_lords_opposition_roles_raw()
     } else {
-        opposition_roles <- get(CACHE_MPS_OPPOSITION_ROLES_RAW, envir = cache)
+        opposition_roles <- get(CACHE_LORDS_OPPOSITION_ROLES_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -438,11 +438,11 @@ fetch_mps_opposition_roles <- function(
     }
 
     # Filter on memberships if requested
-    if (while_mp) {
-        commons_memberships <- fetch_commons_memberships()
+    if (while_lord) {
+        lords_memberships <- fetch_lords_memberships()
         opposition_roles <- filter_memberships(
             tm = opposition_roles,
-            fm = commons_memberships,
+            fm = lords_memberships,
             tm_id_col = "opposition_role_mnis_id",
             tm_start_col = "opposition_role_incumbency_start_date",
             tm_end_col = "opposition_role_incumbency_end_date",
@@ -460,18 +460,18 @@ fetch_mps_opposition_roles <- function(
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
 
-#' Fetch parliamentary roles for all MPs
+#' Fetch parliamentary roles for all Lords
 #'
-#' \code{fetch_mps_parliamentary_roles} fetches data from the Members Names platform
-#' showing parliamentary roles for each MP.
+#' \code{fetch_lords_parliamentary_roles} fetches data from the Members Names platform
+#' showing parliamentary roles for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the roles
 #' returned. The on_date argument is a convenience that sets the from_date and
 #' to_date to the same given date. The on_date has priority: if the on_date is
 #' set, the from_date and to_date are ignored.
 #'
-#' The while_mp argument can be used to filter the roles to include only those
-#' that occurred during the period when each individual was an MP.
+#' The while_lord argument can be used to filter the roles to include only those
+#' that occurred during the period when each individual was a Lord.
 #'
 #' The filtering is inclusive: a role is returned if any part of it falls
 #' within the period specified with the from and to dates.
@@ -490,18 +490,18 @@ fetch_mps_opposition_roles <- function(
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @param while_mp A boolean indicating whether to filter the parliamentary roles
+#' @param while_lord A boolean indicating whether to filter the parliamentary roles
 #' to include only those roles that were held while each individual was serving
-#' as an MP. The default value is TRUE.
-#' @return A tibble of parliamentary roles for each MP, with one row per
+#' as a Lord. The default value is TRUE.
+#' @return A tibble of parliamentary roles for each Lord, with one row per
 #'   parliamentary role.
 #' @export
 
-fetch_mps_parliamentary_roles <- function(
+fetch_lords_parliamentary_roles <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA,
-    while_mp = TRUE) {
+    while_lord = TRUE) {
 
     # Set from_date and to_date to on_date if set
     if (!is.na(on_date)) {
@@ -510,10 +510,10 @@ fetch_mps_parliamentary_roles <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_PARLIAMENTARY_ROLES_RAW, envir = cache)) {
-        parliamentary_roles <- fetch_mps_parliamentary_roles_raw()
+    if (!exists(CACHE_LORDS_PARLIAMENTARY_ROLES_RAW, envir = cache)) {
+        parliamentary_roles <- fetch_lords_parliamentary_roles_raw()
     } else {
-        parliamentary_roles <- get(CACHE_MPS_PARLIAMENTARY_ROLES_RAW, envir = cache)
+        parliamentary_roles <- get(CACHE_LORDS_PARLIAMENTARY_ROLES_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -527,11 +527,11 @@ fetch_mps_parliamentary_roles <- function(
     }
 
     # Filter on memberships if requested
-    if (while_mp) {
-        commons_memberships <- fetch_commons_memberships()
+    if (while_lord) {
+        lords_memberships <- fetch_lords_memberships()
         parliamentary_roles <- filter_memberships(
             tm = parliamentary_roles,
-            fm = commons_memberships,
+            fm = lords_memberships,
             tm_id_col = "parliamentary_role_mnis_id",
             tm_start_col = "parliamentary_role_incumbency_start_date",
             tm_end_col = "parliamentary_role_incumbency_end_date",
@@ -549,10 +549,10 @@ fetch_mps_parliamentary_roles <- function(
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
 
-#' Fetch maiden speeches for all MPs
+#' Fetch maiden speeches for all Lords
 #'
-#' \code{fetch_mps_maiden_speeches} fetches data from the Members Names platform
-#' showing maiden speeches for each MP.
+#' \code{fetch_lords_maiden_speeches} fetches data from the Members Names platform
+#' showing maiden speeches for each Lord.
 #'
 #' The from_date and to_date arguments can be used to filter the speeches
 #' returned. The on_date argument is a convenience that sets the from_date and
@@ -575,11 +575,11 @@ fetch_mps_parliamentary_roles <- function(
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 
-#' @return A tibble of maiden speeches for each MP, with one row per
+#' @return A tibble of maiden speeches for each Lord, with one row per
 #'   maiden speech.
 #' @export
 
-fetch_mps_maiden_speeches <- function(
+fetch_lords_maiden_speeches <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA) {
@@ -591,10 +591,10 @@ fetch_mps_maiden_speeches <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_MPS_MAIDEN_SPEECHES_RAW, envir = cache)) {
-        maiden_speeches <- fetch_mps_maiden_speeches_raw()
+    if (!exists(CACHE_LORDS_MAIDEN_SPEECHES_RAW, envir = cache)) {
+        maiden_speeches <- fetch_lords_maiden_speeches_raw()
     } else {
-        maiden_speeches <- get(CACHE_MPS_MAIDEN_SPEECHES_RAW, envir = cache)
+        maiden_speeches <- get(CACHE_LORDS_MAIDEN_SPEECHES_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -620,10 +620,10 @@ fetch_mps_maiden_speeches <- function(
 
 # NOT COMPLETE / NOT WORKING --------------------------------------------------
 
-#' Fetch party memberships for all MPs
+#' Fetch party memberships for all Lords
 #'
-#' \code{fetch_mps_party_memberships} fetches data from the Members Names platform
-#' showing party memberships for each MP. The memberships are processed and
+#' \code{fetch_lords_party_memberships} fetches data from the Members Names platform
+#' showing party memberships for each Lord. The memberships are processed and
 #' merged so that there is only one row for each period of continuous
 #' membership within the same party. A membership with an NA end date is still
 #' open.
@@ -633,8 +633,8 @@ fetch_mps_maiden_speeches <- function(
 #' to_date to the same given date. The on_date has priority: if the on_date is
 #' set, the from_date and to_date are ignored.
 #'
-#' The while_mp argument can be used to filter the memberships to include only
-#' those that occurred during the period when each individual was an MP.
+#' The while_lord argument can be used to filter the memberships to include only
+#' those that occurred during the period when each individual was a Lord.
 #'
 #' The filtering is inclusive: a membership is returned if any part of it falls
 #' within the period specified with the from and to dates.
@@ -659,22 +659,22 @@ fetch_mps_maiden_speeches <- function(
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @param while_mp A boolean indicating whether to filter the party membership
+#' @param while_lord A boolean indicating whether to filter the party membership
 #'   to include only those memberships that were held while each individual was
-#'   serving as an MP. The default value is TRUE.
+#'   serving as a Lord. The default value is TRUE.
 #' @param collapse A boolean which determines whether to collapse consecutive
 #'   memberships within the same party into a single period of continuous party
 #'   membership. Setting this to TRUE means that party membership ids are not
 #'   returned in the dataframe. The default value is FALSE.
-#' @return A tibble of party memberships for each MP, with one row per party
+#' @return A tibble of party memberships for each Lord, with one row per party
 #'   membership.
 #' @export
 
-fetch_mps_party_memberships <- function(
+fetch_lords_party_memberships <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA,
-    while_mp = TRUE,
+    while_lord = TRUE,
     collapse = FALSE) {
 
     # Set from_date and to_date to on_date if set
@@ -684,10 +684,10 @@ fetch_mps_party_memberships <- function(
     }
 
     # Check cache
-    if (!exists(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, envir = cache)) {
-        party_memberships <- fetch_mps_party_memberships_raw()
+    if (!exists(CACHE_LORDS_PARTY_MEMBERSHIPS_RAW, envir = cache)) {
+        party_memberships <- fetch_lords_party_memberships_raw()
     } else {
-        party_memberships <- get(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, envir = cache)
+        party_memberships <- get(CACHE_LORDS_PARTY_MEMBERSHIPS_RAW, envir = cache)
     }
 
     # Filter on dates if requested
@@ -701,11 +701,11 @@ fetch_mps_party_memberships <- function(
     }
 
     # Filter on memberships if requested
-    if (while_mp) {
-        commons_memberships <- fetch_commons_memberships()
+    if (while_lord) {
+        lords_memberships <- fetch_lords_memberships()
         party_memberships <- filter_memberships(
             tm = party_memberships,
-            fm = commons_memberships,
+            fm = lords_memberships,
             tm_id_col = "party_mnis_id",
             tm_start_col = "party_membership_start_date",
             tm_end_col = "party_membership_end_date",

@@ -73,18 +73,42 @@ process_mps_output <- function(output_table) {
    # Fetch basic details
    mps <- fetch_mps_raw() %>%
       dplyr::select(
-         mnis_id,
-         given_name,
-         family_name,
-         display_name)
+         .data$mnis_id,
+         .data$given_name,
+         .data$family_name,
+         .data$display_name)
 
    # Join tables and tidy
    output <- dplyr::left_join(output_table, mps, by = "mnis_id") %>%
       dplyr::select(
-         mnis_id,
-         given_name,
-         family_name,
-         display_name,
+         .data$mnis_id,
+         .data$given_name,
+         .data$family_name,
+         .data$display_name,
+         dplyr::everything())
+}
+
+#' Combine basic Lords data with output table
+#'
+#' @keywords internal
+
+process_lords_output <- function(output_table) {
+
+   # Fetch basic details
+   lords <- fetch_lords_raw() %>%
+      dplyr::select(
+         .data$mnis_id,
+         .data$given_name,
+         .data$family_name,
+         .data$display_name)
+
+   # Join tables and tidy
+   output <- dplyr::left_join(output_table, lords, by = "mnis_id") %>%
+      dplyr::select(
+         .data$mnis_id,
+         .data$given_name,
+         .data$family_name,
+         .data$display_name,
          dplyr::everything())
 }
 
