@@ -76,6 +76,53 @@ fetch_commons_memberships_raw <- function() {
     memberships
 }
 
+#' Fetch party memberships: MPs
+#'
+#' @keywords internal
+
+fetch_mps_party_memberships_raw <- function() {
+
+    # Fetch raw party membership data
+    party_memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
+
+    # Filter house
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, House == "Commons")
+
+    # Define a function to extract data output for each MP
+    extract_party_memberships <- function(memberships) {
+        memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
+            mnis_id <- member
+            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
+            memberships <- purrr::map_df(memberships$Parties$Party, function(member) {
+                memberships <- tibble::tibble(
+                    party_mnis_id = member$`@Id`,
+                    party_name = member$Name,
+                    party_membership_start_date = member$StartDate,
+                    party_membership_end_date = as.character(member$EndDate))
+            })
+            memberships$mnis_id <- mnis_id
+            memberships
+        })
+    }
+
+    # Call extract function
+    memberships <- extract_party_memberships(party_memberships_raw)
+
+    # Tidy
+    memberships <- process_missing_values(memberships, party_membership_end_date)
+    memberships$party_membership_start_date <- as.Date(memberships$party_membership_start_date)
+    memberships$party_membership_end_date <- as.Date(memberships$party_membership_end_date)
+
+    #  Combine
+    memberships <- process_mps_output(memberships)
+
+    # Cache memberships
+    assign(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, memberships, envir = cache)
+
+    # Return
+    memberships
+}
+
 #' Fetch other parliaments: MPs
 #'
 #' @keywords internal
@@ -323,50 +370,4 @@ fetch_mps_maiden_speeches_raw <- function() {
 
     # Return
     maiden_speeches
-}
-
-# NOT COMPLETE / NOT WORKING --------------------------------------------------
-
-#' Fetch party memberships for all MPs
-#'
-#' @keywords internal
-
-fetch_mps_party_memberships_raw <- function() {
-
-    # Fetch raw party membership data
-    party_memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
-
-    # Define a function to extract data output for each MP
-    extract_party_memberships <- function(memberships) {
-        memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
-            mnis_id <- member
-            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
-            memberships <- purrr::map_df(memberships$Parties$Party, function(member) {
-                memberships <- tibble::tibble(
-                    party_mnis_id = member$`@Id`,
-                    party_name = member$Name,
-                    party_membership_start_date = member$StartDate,
-                    party_membership_end_date = as.character(member$EndDate))
-            })
-            memberships$mnis_id <- mnis_id
-            memberships
-        })
-    }
-
-    # Call extract function
-    memberships <- extract_party_memberships(party_memberships_raw)
-
-    # Tidy
-    memberships <- process_missing_values(memberships, party_membership_end_date)
-    memberships$party_membership_start_date <- as.Date(memberships$party_membership_start_date)
-    memberships$party_membership_end_date <- as.Date(memberships$party_membership_end_date)
-
-    #  Combine
-    memberships <- process_mps_output(memberships)
-
-    # Cache memberships
-    assign(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, memberships, envir = cache)
-
-    # Return
-    memberships
 }

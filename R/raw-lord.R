@@ -18,6 +18,7 @@ fetch_lords_raw <- function() {
         family_name = lords_raw$BasicDetails$GivenSurname,
         display_name = lords_raw$DisplayAs,
         full_title = lords_raw$FullTitle,
+        lord_type = lords_raw$MemberFrom,
         gender = lords_raw$Gender,
         current_age = "",
         date_of_birth = lords_raw$DateOfBirth,
@@ -39,27 +40,27 @@ fetch_lords_raw <- function() {
 fetch_lords_memberships_raw <- function() {
 
     # Fetch raw
-    memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Constituencies")
+    memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "HouseMemberships")
 
     # Define a function to extract data
     extract_lords_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
             memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
-            memberships <- purrr::map_df(memberships$Constituencies$Constituency, function(member) {
+            memberships <- purrr::map_df(memberships$HouseMemberships$HouseMembership, function(member) {
                 memberships <- tibble::tibble(
-                    constituency_mnis_id = member$`@Id`,
-                    constituency_name = member$Name,
+                    house_name = member$House,
                     seat_incumbency_start_date = member$StartDate,
                     seat_incumbency_end_date = as.character(member$EndDate))
-            })
+                })
             memberships$mnis_id <- mnis_id
             memberships
         })
     }
 
     # Extract data
-    memberships <- extract_lords_memberships(memberships_raw)
+    memberships <- extract_lords_memberships(memberships_raw) %>%
+        dplyr::filter(.data$house_name == "Lords")
 
     # Tidy
     memberships <- process_missing_values(memberships, seat_incumbency_end_date)
@@ -67,10 +68,61 @@ fetch_lords_memberships_raw <- function() {
     memberships$seat_incumbency_end_date <- as.Date(memberships$seat_incumbency_end_date)
 
     #  Combine
-    memberships <- process_lords_output(memberships)
+    memberships <- process_lords_output(memberships) %>%
+        dplyr::select(-.data$house_name)
 
     # Cache
     assign(CACHE_LORDS_MEMBERSHIPS_RAW, memberships, envir = cache)
+
+    # Return
+    memberships
+}
+
+#' Fetch party memberships: Lords
+#'
+#' @keywords internal
+
+fetch_lords_party_memberships_raw <- function() {
+
+    # Fetch raw party membership data
+    party_memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Parties")
+
+    # Filter house
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, House == "Lords")
+
+    # Remove NULL
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, !Parties == "NULL")
+
+    # Define a function to extract data output for each MP
+    extract_party_memberships <- function(memberships) {
+        memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
+            mnis_id <- member
+            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
+            memberships <- purrr::map_df(memberships$Parties$Party, function(member) {
+                memberships <- tibble::tibble(
+                    party_mnis_id = member$`@Id`,
+                    party_name = member$Name,
+                    party_membership_start_date = member$StartDate,
+                    party_membership_end_date = as.character(member$EndDate))
+            })
+            memberships$mnis_id <- mnis_id
+            memberships
+        })
+    }
+
+    # Call extract function
+    memberships <- extract_party_memberships(party_memberships_raw)
+
+    # Tidy
+    memberships <- process_missing_values(memberships, party_membership_end_date)
+    memberships$party_membership_start_date <- as.Date(memberships$party_membership_start_date)
+    memberships$party_membership_end_date <- as.Date(memberships$party_membership_end_date)
+
+    #  Combine
+    memberships <- process_lords_output(memberships)
+
+    # Cache memberships
+    assign(CACHE_LORDS_PARTY_MEMBERSHIPS_RAW, memberships, envir = cache)
 
     # Return
     memberships

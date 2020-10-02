@@ -147,6 +147,114 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 
 }
 
+#' Fetch party memberships for all MPs
+#'
+#' \code{fetch_mps_party_memberships} fetches data from the Members Names platform
+#' showing party memberships for each MP. The memberships are processed and
+#' merged so that there is only one row for each period of continuous
+#' membership within the same party. A membership with an NA end date is still
+#' open.
+#'
+#' The from_date and to_date arguments can be used to filter the memberships
+#' returned. The on_date argument is a convenience that sets the from_date and
+#' to_date to the same given date. The on_date has priority: if the on_date is
+#' set, the from_date and to_date are ignored.
+#'
+#' The while_mp argument can be used to filter the memberships to include only
+#' those that occurred during the period when each individual was an MP.
+#'
+#' The filtering is inclusive: a membership is returned if any part of it falls
+#' within the period specified with the from and to dates.
+#'
+#' The collapse argument controls whether memberships are combined so that
+#' there is only one row for each period of continuous membership within the
+#' same party. Combining the memberships in this way means that party
+#' membership ids from the data platform are not included in the tibble
+#' returned.
+#'
+#' Note that a membership with an NA end date is still open.
+#'
+#' @param from_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. '2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis of
+#'   the from_date.
+#' @param to_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the to_date.
+#' @param on_date A string or Date representing a date. If a string is used
+#'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
+#'   default value is NA, which means no records are excluded on the basis
+#'   of the on_date.
+#' @param while_lord A boolean indicating whether to filter the party membership
+#'   to include only those memberships that were held while each individual was
+#'   serving as an MP. The default value is TRUE.
+#' @param collapse A boolean which determines whether to collapse consecutive
+#'   memberships within the same party into a single period of continuous party
+#'   membership. Setting this to TRUE means that party membership ids are not
+#'   returned in the dataframe. The default value is FALSE.
+#' @return A tibble of party memberships for each MP, with one row per party
+#'   membership.
+#' @export
+
+fetch_mps_party_memberships <- function(
+    from_date = NA,
+    to_date = NA,
+    on_date = NA,
+    while_mp = TRUE,
+    collapse = FALSE) {
+
+    # Set from_date and to_date to on_date if set
+    if (!is.na(on_date)) {
+        from_date <- on_date
+        to_date <- on_date
+    }
+
+    # Check cache
+    if (!exists(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, envir = cache)) {
+        party_memberships <- fetch_mps_party_memberships_raw()
+    } else {
+        party_memberships <- get(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, envir = cache)
+    }
+
+    # Filter on dates if requested
+    if (!is.na(from_date) || !is.na(to_date)) {
+        party_memberships <- filter_dates(
+            party_memberships,
+            start_col = "party_membership_start_date",
+            end_col = "party_membership_end_date",
+            from_date = from_date,
+            to_date = to_date)
+    }
+
+    # Filter on memberships if requested
+    if (while_mp) {
+        commons_memberships <- fetch_commons_memberships()
+        party_memberships <- filter_memberships(
+            tm = party_memberships,
+            fm = commons_memberships,
+            tm_id_col = "party_mnis_id",
+            tm_start_col = "party_membership_start_date",
+            tm_end_col = "party_membership_end_date",
+            fm_start_col = "seat_incumbency_start_date",
+            fm_end_col = "seat_incumbency_end_date",
+            join_col = "mnis_id")
+    }
+
+    # Collapse consecutive memberships and return if requested
+    if (collapse) {
+        return(combine_party_memberships(party_memberships))
+    }
+
+    # Otherwise tidy up and return
+    party_memberships %>%
+        dplyr::arrange(
+            .data$family_name,
+            .data$party_membership_start_date) %>%
+        dplyr::mutate_if(is.character, stringr::str_trim)
+
+}
+
 #' Fetch other parliament memberships for all MPs
 #'
 #' \code{fetch_mps_other_parliaments} fetches data from the Members Names platform
