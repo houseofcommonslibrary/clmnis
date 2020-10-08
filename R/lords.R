@@ -223,7 +223,7 @@ fetch_lords_party_memberships <- function(
 
     # Collapse consecutive memberships and return if requested
     if (collapse) {
-        return(combine_party_memberships(party_memberships))
+        party_memberships <- combine_party_memberships(party_memberships)
     }
 
     # Otherwise tidy up and return

@@ -186,7 +186,7 @@ fetch_commons_memberships <- function(from_date = NA, to_date = NA, on_date = NA
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-#' @param while_lord A boolean indicating whether to filter the party membership
+#' @param while_mp A boolean indicating whether to filter the party membership
 #'   to include only those memberships that were held while each individual was
 #'   serving as an MP. The default value is TRUE.
 #' @param collapse A boolean which determines whether to collapse consecutive
@@ -243,7 +243,7 @@ fetch_mps_party_memberships <- function(
 
     # Collapse consecutive memberships and return if requested
     if (collapse) {
-        return(combine_party_memberships(party_memberships))
+        party_memberships <- combine_party_memberships(party_memberships)
     }
 
     # Otherwise tidy up and return
