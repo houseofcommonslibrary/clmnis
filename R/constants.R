@@ -34,6 +34,7 @@ CACHE_LORDS_MAIDEN_SPEECHES_RAW <- "lords_maiden_speeches"
 CACHE_LORDS_OTHER_PARLIAMENTS_RAW <- "lords_other_parliaments"
 CACHE_LORDS_CONTESTED_ELECTIONS_RAW <- "lords_contested_elections"
 
-# Library call - move to namespace --------------------------------------------
+# API settings ----------------------------------------------------------------
 
-library(magrittr)
+#' @keywords internal
+API_PAUSE_TIME = 0.5

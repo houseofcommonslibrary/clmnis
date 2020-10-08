@@ -496,7 +496,7 @@ fetch_lords_government_roles <- function(
 #'   opposition role.
 #' @export
 
-fetch_lord_opposition_roles <- function(
+fetch_lords_opposition_roles <- function(
     from_date = NA,
     to_date = NA,
     on_date = NA,
