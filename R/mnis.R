@@ -7,7 +7,7 @@
 #' @docType package
 #' @name mnis
 #' @importFrom magrittr %>%
-#' @importFrom rland .data
+#' @importFrom rlang .data
 NULL
 
 # Tell R CMD check about the dot operator in pipelines
