@@ -22,7 +22,8 @@ Imports:
 	lubridate,
 	tidyr,
 	stringr,
-	tibble
+	tibble,
+	data.table
 Suggests: 
     testthat
 RoxygenNote: 7.1.1

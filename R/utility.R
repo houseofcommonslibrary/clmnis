@@ -28,7 +28,7 @@ fetch_query_data <- function(house, data_output) {
    query_data$Members$Member
 }
 
-# Data handling functions -----------------------------------------------------
+# Missing data functions ------------------------------------------------------
 
 #' Convert a column with lists representing missing values to NA
 #'
@@ -39,6 +39,8 @@ process_missing_values <- function(data, column) {
       dplyr::filter({{ column }} != "http://www.w3.org/2001/XMLSchema-instance") %>%
       dplyr::mutate({{ column }} := ifelse({{ column }} %in% c("true", MISSING_VALUE_STRING), NA, {{ column }}))
 }
+
+# Data handling functions -----------------------------------------------------
 
 #' Calculate current age of member
 #'

@@ -19,7 +19,6 @@ fetch_mps_raw <- function() {
         display_name = mps_raw$DisplayAs,
         full_title = mps_raw$FullTitle,
         gender = mps_raw$Gender,
-        current_age = "",
         date_of_birth = mps_raw$DateOfBirth,
         date_of_death = mps_raw$DateOfDeath)
 
@@ -28,7 +27,6 @@ fetch_mps_raw <- function() {
     mps <- process_missing_values(mps, date_of_death)
     mps$date_of_birth <- as.Date(unlist(mps$date_of_birth))
     mps$date_of_death <- as.Date(unlist(mps$date_of_death))
-    mps$current_age <- process_member_age(mps$date_of_birth, mps$date_of_death)
     mps
 }
 
@@ -86,7 +84,7 @@ fetch_mps_party_memberships_raw <- function() {
     party_memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
 
     # Filter house
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, House == "Commons")
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, .data$House == "Commons")
 
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
@@ -130,10 +128,10 @@ fetch_mps_party_memberships_raw <- function() {
 fetch_mps_other_parliaments_raw <- function() {
 
     # Fetch raw
-    other_parliaments_raw <-  fetch_query_data(house = HOUSE_COMMONS, "OtherParliaments")
+    other_parliaments_raw <- fetch_query_data(house = HOUSE_COMMONS, "OtherParliaments")
 
     # Remove NULL
-    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
+    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !.data$OtherParliaments == "NULL")
 
     # Define a function to extract data
     extract_other_parliaments <- function(other_parliaments) {
@@ -180,7 +178,7 @@ fetch_mps_contested_elections_raw <- function() {
     contested_elections_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ElectionsContested")
 
     # Remove NULL
-    contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
+    contested_elections_raw <- dplyr::filter(contested_elections_raw, !.data$ElectionsContested == "NULL")
 
     # Define a function to extract data
     extract_contested_elections <- function(contested_elections) {
@@ -227,7 +225,7 @@ fetch_mps_government_roles_raw <- function() {
     government_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "GovernmentPosts")
 
     # Remove NULL
-    government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
+    government_roles_raw <- dplyr::filter(government_roles_raw, !.data$GovernmentPosts == "NULL")
 
     # Extract data
     government_roles <- extract_data_output(
@@ -266,7 +264,7 @@ fetch_mps_opposition_roles_raw <- function() {
     opposition_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "OppositionPosts")
 
     # Remove NULL
-    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
+    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !.data$OppositionPosts == "NULL")
 
     # Extract data
     opposition_roles <- extract_data_output(
@@ -305,7 +303,7 @@ fetch_mps_parliamentary_roles_raw <- function() {
     parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ParliamentaryPosts")
 
     # Remove NULL
-    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
+    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !.data$ParliamentaryPosts == "NULL")
 
     # Extract data
     parliamentary_roles <- extract_data_output(
@@ -344,7 +342,7 @@ fetch_mps_maiden_speeches_raw <- function() {
     maiden_speeches_raw <-  fetch_query_data(house = HOUSE_COMMONS, "MaidenSpeeches")
 
     # Remove NULL
-    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !MaidenSpeeches == "NULL")
+    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !.data$MaidenSpeeches == "NULL")
 
     # Extract data
     maiden_speeches <- extract_data_output(

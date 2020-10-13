@@ -20,16 +20,14 @@ fetch_lords_raw <- function() {
         full_title = lords_raw$FullTitle,
         lord_type = lords_raw$MemberFrom,
         gender = lords_raw$Gender,
-        current_age = "",
         date_of_birth = lords_raw$DateOfBirth,
         date_of_death = lords_raw$DateOfDeath)
 
-    # Tidy and return
+    # Tidy and return"
     lords <- process_missing_values(lords, date_of_birth)
     lords <- process_missing_values(lords, date_of_death)
     lords$date_of_birth <- as.Date(unlist(lords$date_of_birth))
     lords$date_of_death <- as.Date(unlist(lords$date_of_death))
-    lords$current_age <- process_member_age(lords$date_of_birth, lords$date_of_death)
     lords
 }
 
@@ -88,10 +86,10 @@ fetch_lords_party_memberships_raw <- function() {
     party_memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Parties")
 
     # Filter house
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, House == "Lords")
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, .data$House == "Lords")
 
     # Remove NULL
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, !Parties == "NULL")
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, !.data$Parties == "NULL")
 
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
@@ -138,7 +136,7 @@ fetch_lords_other_parliaments_raw <- function() {
     other_parliaments_raw <-  fetch_query_data(house = HOUSE_LORDS, "OtherParliaments")
 
     # Remove NULL
-    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
+    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !.data$OtherParliaments == "NULL")
 
     # Define a function to extract data
     extract_other_parliaments <- function(other_parliaments) {
@@ -169,7 +167,7 @@ fetch_lords_other_parliaments_raw <- function() {
     other_parliaments <- process_lords_output(other_parliaments)
 
     # Cache
-    assign(CACHE_MPS_OTHER_PARLIAMENTS_RAW, other_parliaments, envir = cache)
+    assign(CACHE_LORDS_OTHER_PARLIAMENTS_RAW, other_parliaments, envir = cache)
 
     # Return
     other_parliaments
@@ -185,7 +183,7 @@ fetch_lords_contested_elections_raw <- function() {
     contested_elections_raw <-  fetch_query_data(house = HOUSE_LORDS, "ElectionsContested")
 
     # Remove NULL
-    contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
+    contested_elections_raw <- dplyr::filter(contested_elections_raw, !.data$ElectionsContested == "NULL")
 
     # Define a function to extract data
     extract_contested_elections <- function(contested_elections) {
@@ -232,7 +230,7 @@ fetch_lords_government_roles_raw <- function() {
     government_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "GovernmentPosts")
 
     # Remove NULL
-    government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
+    government_roles_raw <- dplyr::filter(government_roles_raw, !.data$GovernmentPosts == "NULL")
 
     # Extract data
     government_roles <- extract_data_output(
@@ -271,7 +269,7 @@ fetch_lords_opposition_roles_raw <- function() {
     opposition_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "OppositionPosts")
 
     # Remove NULL
-    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
+    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !.data$OppositionPosts == "NULL")
 
     # Extract data
     opposition_roles <- extract_data_output(
@@ -310,7 +308,7 @@ fetch_lords_parliamentary_roles_raw <- function() {
     parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "ParliamentaryPosts")
 
     # Remove NULL
-    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
+    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !.data$ParliamentaryPosts == "NULL")
 
     # Extract data
     parliamentary_roles <- extract_data_output(
@@ -349,7 +347,7 @@ fetch_lords_maiden_speeches_raw <- function() {
     maiden_speeches_raw <-  fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
 
     # Remove NULL
-    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !MaidenSpeeches == "NULL")
+    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !.data$MaidenSpeeches == "NULL")
 
     # Extract data
     maiden_speeches <- extract_data_output(
