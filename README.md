@@ -1,4 +1,4 @@
-# mnis
+# clmnis
 mnis is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
 
 ## Overview
