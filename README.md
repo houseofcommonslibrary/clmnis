@@ -1,5 +1,9 @@
 # clmnis
+<<<<<<< Updated upstream
 mnis is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
+=======
+clmnis is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
+>>>>>>> Stashed changes
 
 ## Overview
 The MNIS API is the public interface to the UK Parliament's Members Names database, a comprehensive database of all Members sitting in either the House of Commons or House of Lords. The API is flexible and powerful, but it's not very easy to use. The mnis package is a toolkit that makes it easier to download and manipulate useful data from the API through a high level interface comprising families of functions for downloading specific datasets.
@@ -9,7 +13,7 @@ Install from Github with using remotes.
 
 ```r
 install.packages("remotes")
-remotes::install_github("houseofcommonslibrary/mnis")
+remotes::install_github("houseofcommonslibrary/clmnis")
 ```
 
 ## MNIS API
@@ -27,7 +31,7 @@ Some MP functions have an optional argument called ```while_mp```, which filters
 ---
 
 ```r
-mnis::fetch_mps(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_mps(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of key details about each MP, with one row per MP.
@@ -39,7 +43,7 @@ The ```from_date```, ```to_date``` and ```on_date``` arguments can be used to fi
 ---
 
 ```r
-mnis::fetch_commons_memberships(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_commons_memberships(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of Commons memberships for each MP, with one row per Commons membership.
@@ -49,7 +53,7 @@ The memberships dates are processed to impose consistent rules on the start and 
 --- 
 
 ```r
-mnis::fetch_mps_party_memberships(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE, collapse = FALSE)
+clmnis::fetch_mps_party_memberships(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE, collapse = FALSE)
 ```
 
 Fetch a dataframe of party memberships for each MP, with one row per party membership.
@@ -61,7 +65,7 @@ Note that party memberships are not necessarily closed when an individual stops 
 --- 
 
 ```r
-mnis::fetch_mps_other_parliaments(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_mps_other_parliaments(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of memberships of other parliaments for each MP, with one row per other parliament membership.
@@ -69,7 +73,7 @@ Fetch a dataframe of memberships of other parliaments for each MP, with one row 
 ---
 
 ```r
-mnis::fetch_mps_contested_elections(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_mps_contested_elections(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of contested parliamentary elections for each MP, with one row per contested election.
@@ -77,7 +81,7 @@ Fetch a dataframe of contested parliamentary elections for each MP, with one row
 ---
 
 ```r
-mnis::fetch_mps_government_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
+clmnis::fetch_mps_government_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
 ```
 
 Fetch a dataframe of government roles for each MP, with one row per government role.
@@ -85,7 +89,7 @@ Fetch a dataframe of government roles for each MP, with one row per government r
 --- 
 
 ```r
-mnis::fetch_mps_opposition_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
+clmnis::fetch_mps_opposition_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
 ```
 
 Fetch a dataframe of opposition roles for each MP, with one row per opposition role.
@@ -93,7 +97,7 @@ Fetch a dataframe of opposition roles for each MP, with one row per opposition r
 ---
 
 ```r
-mnis::fetch_mps_parliamentary_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
+clmnis::fetch_mps_parliamentary_roles(from_date = NA, to_date = NA, on_date = NA, while_mp = TRUE)
 ```
 
 Fetch a dataframe of parliamentary roles for each MP, with one row per parliamentary role.
@@ -101,7 +105,7 @@ Fetch a dataframe of parliamentary roles for each MP, with one row per parliamen
 ---
 
 ```r
-mnis::fetch_mps_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_mps_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of maiden speeches for each MP, with one row per maiden speech.
@@ -114,7 +118,7 @@ Some Lords functions have an optional argument called ```while_lord```, which fi
 ---
 
 ```r
-mnis::fetch_lords(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_lords(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of key details about each Lord, with one row per Lord.
@@ -126,7 +130,7 @@ The ```from_date```, ```to_date``` and ```on_date``` arguments can be used to fi
 ---
 
 ```r
-mnis::fetch_lords_memberships(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_lords_memberships(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of Lords memberships for each Lord, with one row per Lords membership.
@@ -134,7 +138,7 @@ Fetch a dataframe of Lords memberships for each Lord, with one row per Lords mem
 --- 
 
 ```r
-mnis::fetch_lords_party_memberships(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE, collapse = FALSE)
+clmnis::fetch_lords_party_memberships(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE, collapse = FALSE)
 ```
 
 Fetch a dataframe of party memberships for each Lord, with one row per party membership.
@@ -146,7 +150,7 @@ Note that party memberships are not necessarily closed when an individual stops 
 --- 
 
 ```r
-mnis::fetch_lords_other_parliaments(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_lords_other_parliaments(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of memberships of other parliaments for each Lord, with one row per other parliament membership.
@@ -154,7 +158,7 @@ Fetch a dataframe of memberships of other parliaments for each Lord, with one ro
 ---
 
 ```r
-mnis::fetch_lords_contested_elections(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_lords_contested_elections(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of contested parliamentary elections for each Lord, with one row per contested election.
@@ -162,7 +166,7 @@ Fetch a dataframe of contested parliamentary elections for each Lord, with one r
 ---
 
 ```r
-mnis::fetch_lords_government_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
+clmnis::fetch_lords_government_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
 ```
 
 Fetch a dataframe of government roles for each Lord, with one row per government role.
@@ -170,7 +174,7 @@ Fetch a dataframe of government roles for each Lord, with one row per government
 --- 
 
 ```r
-mnis::fetch_lords_opposition_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
+clmnis::fetch_lords_opposition_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
 ```
 
 Fetch a dataframe of opposition roles for each Lord, with one row per opposition role.
@@ -178,7 +182,7 @@ Fetch a dataframe of opposition roles for each Lord, with one row per opposition
 ---
 
 ```r
-mnis::fetch_lords_parliamentary_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
+clmnis::fetch_lords_parliamentary_roles(from_date = NA, to_date = NA, on_date = NA, while_lord = TRUE)
 ```
 
 Fetch a dataframe of parliamentary roles for each Lord, with one row per parliamentary role.
@@ -186,7 +190,7 @@ Fetch a dataframe of parliamentary roles for each Lord, with one row per parliam
 ---
 
 ```r
-mnis::fetch_lords_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
+clmnis::fetch_lords_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
 ```
 
 Fetch a dataframe of maiden speeches for each Lord, with one row per maiden speech.

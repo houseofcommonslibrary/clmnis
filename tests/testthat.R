@@ -1,4 +1,4 @@
 library(testthat)
-library(mnis)
+library(clmnis)
 
-test_check("mnis")
+test_check("clmnis")

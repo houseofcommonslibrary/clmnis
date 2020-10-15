@@ -1,4 +1,4 @@
-Package: mnis
+Package: clmnis
 Type: Package
 Title: An R package for downloading data from the Parliamentary Members Names Information Service
 Version: 0.1.0
