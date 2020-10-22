@@ -23,8 +23,8 @@ fetch_mps_raw <- function() {
         date_of_death = mps_raw$DateOfDeath)
 
     # Tidy and return
-    mps <- process_missing_values(mps, date_of_birth)
-    mps <- process_missing_values(mps, date_of_death)
+    mps <- process_missing_values(mps, "date_of_birth")
+    mps <- process_missing_values(mps, "date_of_death")
     mps$date_of_birth <- as.Date(unlist(mps$date_of_birth))
     mps$date_of_death <- as.Date(unlist(mps$date_of_death))
     mps
@@ -43,7 +43,7 @@ fetch_commons_memberships_raw <- function() {
     extract_commons_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
-            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
+            memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
             memberships <- purrr::map_df(memberships$Constituencies$Constituency, function(member) {
                 memberships <- tibble::tibble(
                     constituency_mnis_id = member$`@Id`,
@@ -60,7 +60,7 @@ fetch_commons_memberships_raw <- function() {
     memberships <- extract_commons_memberships(memberships_raw)
 
     # Tidy
-    memberships <- process_missing_values(memberships, seat_incumbency_end_date)
+    memberships <- process_missing_values(memberships, "seat_incumbency_end_date")
     memberships$seat_incumbency_start_date <- as.Date(memberships$seat_incumbency_start_date)
     memberships$seat_incumbency_end_date <- as.Date(memberships$seat_incumbency_end_date)
 
@@ -90,7 +90,7 @@ fetch_mps_party_memberships_raw <- function() {
     extract_party_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
-            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
+            memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
             memberships <- purrr::map_df(memberships$Parties$Party, function(member) {
                 memberships <- tibble::tibble(
                     party_mnis_id = member$`@Id`,
@@ -107,7 +107,7 @@ fetch_mps_party_memberships_raw <- function() {
     memberships <- extract_party_memberships(party_memberships_raw)
 
     # Tidy
-    memberships <- process_missing_values(memberships, party_membership_end_date)
+    memberships <- process_missing_values(memberships, "party_membership_end_date")
     memberships$party_membership_start_date <- as.Date(memberships$party_membership_start_date)
     memberships$party_membership_end_date <- as.Date(memberships$party_membership_end_date)
 
@@ -137,7 +137,7 @@ fetch_mps_other_parliaments_raw <- function() {
     extract_other_parliaments <- function(other_parliaments) {
         other_parliaments <- purrr::map_df(other_parliaments$`@Member_Id`, function(member) {
             mnis_id <- member
-            other_parliaments <- dplyr::filter(other_parliaments, `@Member_Id` == mnis_id)
+            other_parliaments <- dplyr::filter(other_parliaments, .data$`@Member_Id` == mnis_id)
             other_parliaments <- purrr::map_df(other_parliaments$OtherParliaments$OtherParliament, function(member) {
                 other_parliaments <- tibble::tibble(
                     other_parliaments_mnis_id = member$`@Id`,
@@ -154,7 +154,7 @@ fetch_mps_other_parliaments_raw <- function() {
     other_parliaments <- extract_other_parliaments(other_parliaments_raw)
 
     # Tidy
-    other_parliaments <- process_missing_values(other_parliaments, other_parliaments_incumbency_end_date)
+    other_parliaments <- process_missing_values(other_parliaments, "other_parliaments_incumbency_end_date")
     other_parliaments$other_parliaments_incumbency_start_date <- as.Date(other_parliaments$other_parliaments_incumbency_start_date)
     other_parliaments$other_parliaments_incumbency_end_date <- as.Date(other_parliaments$other_parliaments_incumbency_end_date)
 
@@ -184,7 +184,7 @@ fetch_mps_contested_elections_raw <- function() {
     extract_contested_elections <- function(contested_elections) {
         contested_elections <- purrr::map_df(contested_elections$`@Member_Id`, function(member) {
             mnis_id <- member
-            contested_elections <- dplyr::filter(contested_elections, `@Member_Id` == mnis_id)
+            contested_elections <- dplyr::filter(contested_elections, .data$`@Member_Id` == mnis_id)
             contested_elections <- purrr::map_df(contested_elections$ElectionsContested$ElectionContested, function(member) {
                 contested_elections <- tibble::tibble(
                     contested_election_mnis_id = member$Election$`@Id`,
@@ -202,7 +202,7 @@ fetch_mps_contested_elections_raw <- function() {
     contested_elections <- extract_contested_elections(contested_elections_raw)
 
     # Tidy
-    contested_elections <- process_missing_values(contested_elections, contested_election_date)
+    contested_elections <- process_missing_values(contested_elections, "contested_election_date")
     contested_elections$contested_election_date <- as.Date(contested_elections$contested_election_date)
 
     # Combine

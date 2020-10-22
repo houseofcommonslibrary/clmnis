@@ -35,9 +35,9 @@ fetch_query_data <- function(house, data_output) {
 #' @keywords internal
 
 process_missing_values <- function(data, column) {
-   data %>%
-      dplyr::filter({{ column }} != "http://www.w3.org/2001/XMLSchema-instance") %>%
-      dplyr::mutate({{ column }} := ifelse({{ column }} %in% c("true", MISSING_VALUE_STRING), NA, {{ column }}))
+    data %>%
+        dplyr::filter(.data[[column]] != "http://www.w3.org/2001/XMLSchema-instance") %>%
+        dplyr::mutate({{ column }} := ifelse(.data[[column]] %in% c("true", MISSING_VALUE_STRING), NA, .data[[column]]))
 }
 
 # Data handling functions -----------------------------------------------------
@@ -58,7 +58,7 @@ process_member_age <- function(from, to) {
 extract_data_output <- function(data_output, col_section_a, col_section_b) {
    data_output <- purrr::map_df(data_output$`@Member_Id`, function(member) {
       mnis_id <- member
-      data_output <- dplyr::filter(data_output, `@Member_Id` == mnis_id)
+      data_output <- dplyr::filter(data_output, .data$`@Member_Id` == mnis_id)
       data_output <- purrr::pluck(data_output[[{{ col_section_a }}]][[{{ col_section_b }}]])
       data_output[[1]][["mnis_id"]] <- mnis_id
       data_output <- purrr::discard(data_output[[1]], is.null)

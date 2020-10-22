@@ -12,49 +12,49 @@ source("tests/testthat/validate.R")
 
 fetch_mps_mocks_data <- function() {
 
-    # Download MPs
-    l <- fetch_mps_raw()
-    write(l, "mps_raw")
+    # Download MPs basic details
+    m <- fetch_query_data(house = HOUSE_COMMONS, "BasicDetails")
+    write(m, "mps_basic_details")
     Sys.sleep(API_PAUSE_TIME)
 
-    # Download MPs memberships
-    cm <- fetch_commons_memberships_raw()
-    write(cm, "mps_memberships_raw")
+    # Download MPs house memberships
+    mhm <- fetch_query_data(house = HOUSE_COMMONS, "Constituencies")
+    write(mhm, "mps_constituencies")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs party memberships
-    pm <- fetch_mps_party_memberships_raw()
-    write(pm, "mps_party_memberships_raw")
+    mpm <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
+    write(mpm, "mps_party_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
-    # Download MPs other parliaments memberships
-    op <- fetch_mps_other_parliaments_raw()
-    write(op, "mps_other_parliaments_raw")
+    # Download MPs other parliaments
+    mop <- fetch_query_data(house = HOUSE_COMMONS, "OtherParliaments")
+    write(mop, "mps_other_parliaments")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs contested elections
-    ce <- fetch_mps_contested_elections_raw()
-    write(ce, "mps_contested_elections_raw")
+    mce <- fetch_query_data(house = HOUSE_COMMONS, "ElectionsContested")
+    write(mce, "mps_contested_elections")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs government roles
-    gor <- fetch_mps_government_roles_raw()
-    write(gor, "mps_government_roles_raw")
+    mgr <- fetch_query_data(house = HOUSE_COMMONS, "GovernmentPosts")
+    write(mgr, "mps_government_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs opposition roles
-    opr <- fetch_mps_opposition_roles_raw()
-    write(opr, "mps_opposition_roles_raw")
+    mor <- fetch_query_data(house = HOUSE_COMMONS, "OppositionPosts")
+    write(mor, "mps_opposition_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs parliamentary roles
-    pmr <- fetch_mps_parliamentary_roles_raw()
-    write(pmr, "mps_parliamentary_roles_raw")
+    mpr <- fetch_query_data(house = HOUSE_COMMONS, "ParliamentaryPosts")
+    write(mpr, "mps_parliamentary_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download MPs maiden speeches
-    mds <- fetch_mps_maiden_speeches_raw()
-    write(mds, "mps_maiden_speeches_raw")
+    mms <- fetch_query_data(house = HOUSE_COMMONS, "MaidenSpeeches")
+    write(mms, "mps_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
 }
 
@@ -70,19 +70,19 @@ fetch_mps_validation_data <- function() {
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs with from and to dates
-    l <- fetch_mps(from_date = "2017-06-08", to_date = "2017-06-08")
-    write(l, "fetch_mps_from_to")
+    m <- fetch_mps(from_date = "2017-06-08", to_date = "2017-06-08")
+    write(m, "fetch_mps_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Commons memberships
-    lm <- fetch_commons_memberships()
-    write(lm, "fetch_mps_memberships")
+    mm <- fetch_commons_memberships()
+    write(mm, "fetch_mps_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Commons memberships with from and to dates
-    lm <- fetch_commons_memberships(
+    mm <- fetch_commons_memberships(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(lm, "fetch_mps_memberships_from_to")
+    write(mm, "fetch_mps_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs party memberships

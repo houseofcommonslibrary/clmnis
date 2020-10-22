@@ -1,6 +1,6 @@
 ### Download data for unit testing Lords
 
-# Imports -------------------------------------------------------------------
+# Imports ---------------------------------------------------------------------
 
 source("tests/testthat/validate.R")
 
@@ -12,49 +12,49 @@ source("tests/testthat/validate.R")
 
 fetch_lords_mocks_data <- function() {
 
-    # Download Lords
-    l <- fetch_lords_raw()
-    write(l, "lords_raw")
+    # Download Lords basic details
+    l <- fetch_query_data(house = HOUSE_LORDS, "BasicDetails")
+    write(l, "lords_basic_details")
     Sys.sleep(API_PAUSE_TIME)
 
-    # Download Lords memberships
-    cm <- fetch_lords_memberships_raw()
-    write(cm, "lords_memberships_raw")
+    # Download Lords house memberships
+    lhm <- fetch_query_data(house = HOUSE_LORDS, "HouseMemberships")
+    write(lhm, "lords_house_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords party memberships
-    pm <- fetch_lords_party_memberships_raw()
-    write(pm, "lords_party_memberships_raw")
+    lpm <- fetch_query_data(house = HOUSE_LORDS, "Parties")
+    write(lpm, "lords_party_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
-    # Download Lords other parliaments memberships
-    op <- fetch_lords_other_parliaments_raw()
-    write(op, "lords_other_parliaments_raw")
+    # Download Lords other parliaments
+    lop <- fetch_query_data(house = HOUSE_LORDS, "OtherParliaments")
+    write(lop, "lords_other_parliaments")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords contested elections
-    ce <- fetch_lords_contested_elections_raw()
-    write(ce, "lords_contested_elections_raw")
+    lce <- fetch_query_data(house = HOUSE_LORDS, "ElectionsContested")
+    write(lce, "lords_contested_elections")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords government roles
-    gor <- fetch_lords_government_roles_raw()
-    write(gor, "lords_government_roles_raw")
+    lgr <- fetch_query_data(house = HOUSE_LORDS, "GovernmentPosts")
+    write(lgr, "lords_government_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords opposition roles
-    opr <- fetch_lords_opposition_roles_raw()
-    write(opr, "lords_opposition_roles_raw")
+    lor <- fetch_query_data(house = HOUSE_LORDS, "OppositionPosts")
+    write(lor, "lords_opposition_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords parliamentary roles
-    pmr <- fetch_lords_parliamentary_roles_raw()
-    write(pmr, "lords_parliamentary_roles_raw")
+    lpr <- fetch_query_data(house = HOUSE_LORDS, "ParliamentaryPosts")
+    write(lpr, "lords_parliamentary_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Download Lords maiden speeches
-    mds <- fetch_lords_maiden_speeches_raw()
-    write(mds, "lords_maiden_speeches_raw")
+    lms <- fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
+    write(lms, "lords_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
 }
 
@@ -65,8 +65,8 @@ fetch_lords_mocks_data <- function() {
 fetch_lords_validation_data <- function() {
 
     # Fetch Lords
-    m <- fetch_lords()
-    write(m, "fetch_lords")
+    l <- fetch_lords()
+    write(l, "fetch_lords")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords with from and to dates

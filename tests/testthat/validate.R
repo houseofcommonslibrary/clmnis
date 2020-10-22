@@ -1,5 +1,10 @@
 ### Manage test data for validation
 
+# Constants -------------------------------------------------------------------
+
+READ_TEST_DATA_DIR <- file.path("data")
+WRITE_TEST_DATA_DIR <- file.path("tests", "testthat", "data")
+
 # Read and write data ---------------------------------------------------------
 
 #' Read a file from the data directory
@@ -7,7 +12,8 @@
 #' @keywords internal
 
 read <- function(filename) {
-    readRDS(stringr::str_glue("tests/testthat/data/{filename}.RData"))
+    readRDS(file.path(READ_TEST_DATA_DIR,
+                      stringr::str_glue("{filename}.RData")))
 }
 
 #' Write a tibble to the data directory
@@ -15,7 +21,8 @@ read <- function(filename) {
 #' @keywords internal
 
 write <- function(df, filename) {
-    saveRDS(df, stringr::str_glue("tests/testthat/data/{filename}.RData"))
+    saveRDS(df, file.path(WRITE_TEST_DATA_DIR,
+                          stringr::str_glue("{filename}.RData")))
 }
 
 # Comparison function ---------------------------------------------------------
