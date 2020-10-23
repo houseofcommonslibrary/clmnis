@@ -2,8 +2,12 @@ Package: clmnis
 Type: Package
 Title: An R package for downloading data from the Parliamentary Members Names Information Service
 Version: 0.1.0
-Author: Noel Dempsey
-Maintainer: The package maintainer <yourself@somewhere.net>
+Authors@R: 
+    person(
+        given = "Noel",
+        family = "Dempsey",
+        role = c("aut", "cre"),
+        email = "noel.dempsey@outlook.com")
 Description: This package provides functions for downloading data from the
     Parliamentary Members Names Information Service. The core functions offer simple way to
     send queries to the API endpoint and receive the results as a tibble 
