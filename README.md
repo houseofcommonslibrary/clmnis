@@ -1,10 +1,10 @@
 # clmnis
-clmnis is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
+__clmnis__ is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
 
 __Please note that this package is currently in beta and should not yet be relied on for research purposes.__
 
 ## Overview
-The MNIS API is the public interface to the UK Parliament's Members Names database, a comprehensive database of all Members sitting in either the House of Commons or House of Lords. The API is flexible and powerful, but it's not very easy to use. The mnis package is a toolkit that makes it easier to download and manipulate useful data from the API through a high level interface comprising families of functions for downloading specific datasets.
+The MNIS API is the public interface to the UK Parliament's Members Names Information Service, a comprehensive database of all Members sitting in either the House of Commons or House of Lords. The API is flexible and powerful, but it's not very easy to use. The __clmnis__ package is a toolkit that allows you to download and manipulate useful data from the API through a high-level interface, comprising families of functions for downloading specific datasets.
 
 ## Installation
 Install from Github with using remotes.
@@ -17,7 +17,7 @@ remotes::install_github("houseofcommonslibrary/clmnis")
 ## MNIS API
 The MNIS API provides access to data on Members of both Houses of Parliament. It provides similar functions for downloading data on both MPs and Lords, but the structure of the data returned in each case may differ to reflect differences between Commons and Lords memberships.
 
-Each of these Member functions can take optional arguments for a ```from_date``` and a ```to_date```, which can be used to filter the rows returned based on a period of activity related to each row. The ```on_date``` argument is a convenience that sets the ```from_date``` and ```to_date``` to the same given date. The ```on_date``` has priority: if the ```on_date``` is set, the ```from_date``` and ```to_date``` are ignored. The values for these arguments can be either a Date or a string specifying a date in ISO 8601 format ("YYYY-MM-DD").
+Many of these functions can take optional arguments for a ```from_date``` and a ```to_date```, which can be used to filter the rows returned based on a period of activity related to each row. The ```on_date``` argument is a convenience that sets the ```from_date``` and ```to_date``` to the same given date. The ```on_date``` has priority: if the ```on_date``` is set, the ```from_date``` and ```to_date``` are ignored. The values for these arguments can be either a Date or a string specifying a date in ISO 8601 format ("YYYY-MM-DD").
 
 The filtering performed using these arguments is inclusive: a row is returned if any part of the activity in question falls within the period specified with the from and to dates. If the activity in question has not yet ended, the end date will have a value of NA.
 
@@ -110,6 +110,16 @@ Fetch a dataframe of maiden speeches for each MP, with one row per maiden speech
 
 ---
 
+```r
+clmnis::fetch_mps_addresses()
+```
+
+Fetch a dataframe of addresses showing contact details for each MP, with one row per address.
+
+Addresses can represent contact information of different types, including phsyical addresses, phone, fax, email, website, and social media. These addresses are not time bound in MNIS so date filtering is not available for this function.
+
+---
+
 ## Lords
 Some Lords functions have an optional argument called ```while_lord```, which filters the rows to include only those records that coincide with the period when the individual was serving in the House of Lords. This is sometimes necessary because someone who serves in the House of Lords may previously have served in the House of Commons and may have held different roles while serving in both Houses. When this argument is set to *FALSE* these functions will return all relevant records for each individual, even if the records themselves relate to periods when the individual was not a Lord.
 
@@ -195,10 +205,13 @@ Fetch a dataframe of maiden speeches for each Lord, with one row per maiden spee
 
 ---
 
+```r
+clmnis::fetch_lords_addresses()
+```
 
+Fetch a dataframe of addresses showing contact details for each Lord, with one row per address.
 
+Addresses can represent contact information of different types, including phsyical addresses, phone, fax, email, website, and social media. These addresses are not time bound in MNIS so date filtering is not available for this function.
 
-
-
-
+---
 

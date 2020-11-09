@@ -375,4 +375,51 @@ fetch_lords_maiden_speeches_raw <- function() {
     maiden_speeches
 }
 
+#' Fetch addresses: Lords
+#'
+#' @keywords internal
 
+fetch_lords_addresses_raw <- function() {
+
+    # Fetch raw
+    addresses_raw <-  fetch_query_data(house = HOUSE_LORDS, "Addresses")
+
+    # Remove NULL
+    addresses_raw <- dplyr::filter(addresses_raw, !.data$Addresses == "NULL")
+
+    # Extract data
+    addresses <- extract_data_output(
+        addresses_raw,
+        "Addresses",
+        "Address") %>%
+        dplyr::select(
+            .data$mnis_id,
+            address_type_mnis_id = .data$`@Type_Id`,
+            address_type  = .data$Type,
+            address_is_preffered  = .data$IsPreferred,
+            address_is_physical  = .data$IsPhysical,
+            address_note  = .data$Note,
+            address_1  = .data$Address1,
+            address_2  = .data$Address2,
+            address_3  = .data$Address3,
+            address_4  = .data$Address4,
+            address_5  = .data$Address5,
+            postcode  = .data$Postcode,
+            phone  = .data$Phone,
+            fax  = .data$Fax,
+            email  = .data$Email,
+            address_other = .data$OtherAddress)
+
+    # Tidy
+    addresses$address_is_preffered <- as.logical(addresses$address_is_preffered)
+    addresses$address_is_physical <- as.logical(addresses$address_is_physical)
+
+    # Combine
+    addresses <- process_lords_output(addresses)
+
+    # Cache
+    assign(CACHE_LORDS_ADDRESSES_RAW, addresses, envir = cache)
+
+    # Return
+    addresses
+}

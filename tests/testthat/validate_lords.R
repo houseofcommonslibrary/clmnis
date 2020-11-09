@@ -56,6 +56,11 @@ fetch_lords_mocks_data <- function() {
     lms <- fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
     write(lms, "lords_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
+
+    # Download Lords addresses
+    la <- fetch_query_data(house = HOUSE_LORDS, "Addresses")
+    write(la, "lords_addresses")
+    Sys.sleep(API_PAUSE_TIME)
 }
 
 #' Fetch validation data for unit tests of Lords
@@ -75,116 +80,121 @@ fetch_lords_validation_data <- function() {
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords memberships
-    lm <- fetch_lords_memberships()
-    write(lm, "fetch_lords_memberships")
+    lhm <- fetch_lords_memberships()
+    write(lhm, "fetch_lords_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords memberships with from and to dates
-    lm <- fetch_lords_memberships(
+    lhm <- fetch_lords_memberships(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(lm, "fetch_lords_memberships_from_to")
+    write(lhm, "fetch_lords_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords party memberships
-    pm <- fetch_lords_party_memberships()
-    write(pm, "fetch_lords_party_memberships")
+    lpm <- fetch_lords_party_memberships()
+    write(lpm, "fetch_lords_party_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords party memberships with from and to dates
-    pm <- fetch_lords_party_memberships(
+    lpm <- fetch_lords_party_memberships(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(pm, "fetch_lords_party_memberships_from_to")
+    write(lpm, "fetch_lords_party_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords party memberships with while_lord
-    pm <- fetch_lords_party_memberships(while_lord = FALSE)
-    write(pm, "fetch_lords_party_memberships_while_lord")
+    lpm <- fetch_lords_party_memberships(while_lord = FALSE)
+    write(lpm, "fetch_lords_party_memberships_while_lord")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords party memberships with collapse
-    pm <- fetch_lords_party_memberships(collapse = TRUE)
-    write(pm, "fetch_lords_party_memberships_collapse")
+    lpm <- fetch_lords_party_memberships(collapse = TRUE)
+    write(lpm, "fetch_lords_party_memberships_collapse")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords other parliament memberships
-    op <- fetch_lords_other_parliaments()
-    write(op, "fetch_lords_other_parliaments")
+    lop <- fetch_lords_other_parliaments()
+    write(lop, "fetch_lords_other_parliaments")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords other parliament memberships with from and to dates
-    op <- fetch_lords_other_parliaments(
+    lop <- fetch_lords_other_parliaments(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(op, "fetch_lords_other_parliaments_from_to")
+    write(lop, "fetch_lords_other_parliaments_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords contested elections
-    ce <- fetch_lords_contested_elections()
-    write(ce, "fetch_lords_contested_elections")
+    lce <- fetch_lords_contested_elections()
+    write(lce, "fetch_lords_contested_elections")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords contested elections with from and to dates
-    ce <- fetch_lords_contested_elections(
+    lce <- fetch_lords_contested_elections(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(ce, "fetch_lords_contested_elections_from_to")
+    write(lce, "fetch_lords_contested_elections_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords government roles
-    gor <- fetch_lords_government_roles()
-    write(gor, "fetch_lords_government_roles")
+    lgr <- fetch_lords_government_roles()
+    write(lgr, "fetch_lords_government_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords government roles with from and to dates
-    gor <- fetch_lords_government_roles(
+    lgr <- fetch_lords_government_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(gor, "fetch_lords_government_roles_from_to")
+    write(lgr, "fetch_lords_government_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords government roles with while_lord
-    gor <- fetch_lords_government_roles(while_lord = FALSE)
-    write(gor, "fetch_lords_government_roles_while_lord")
+    lgr <- fetch_lords_government_roles(while_lord = FALSE)
+    write(lgr, "fetch_lords_government_roles_while_lord")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords opposition roles
-    opr <- fetch_lords_opposition_roles()
-    write(opr, "fetch_lords_opposition_roles")
+    lor <- fetch_lords_opposition_roles()
+    write(lor, "fetch_lords_opposition_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords opposition roles with from and to dates
-    opr <- fetch_lords_opposition_roles(
+    lor <- fetch_lords_opposition_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(opr, "fetch_lords_opposition_roles_from_to")
+    write(lor, "fetch_lords_opposition_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords opposition roles with while_lord
-    opr <- fetch_lords_opposition_roles(while_lord = FALSE)
-    write(opr, "fetch_lords_opposition_roles_while_lord")
+    lor <- fetch_lords_opposition_roles(while_lord = FALSE)
+    write(lor, "fetch_lords_opposition_roles_while_lord")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords parliamentary roles
-    pmr <- fetch_lords_parliamentary_roles()
-    write(pmr, "fetch_lords_parliamentary_roles")
+    lpr <- fetch_lords_parliamentary_roles()
+    write(lpr, "fetch_lords_parliamentary_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords parliamentary roles with from and to dates
-    pmr <- fetch_lords_parliamentary_roles(
+    lpr <- fetch_lords_parliamentary_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(pmr, "fetch_lords_parliamentary_roles_from_to")
+    write(lpr, "fetch_lords_parliamentary_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords parliamentary roles with while_lord
-    pmr <- fetch_lords_parliamentary_roles(while_lord = FALSE)
-    write(pmr, "fetch_lords_parliamentary_roles_while_lord")
+    lpr <- fetch_lords_parliamentary_roles(while_lord = FALSE)
+    write(lpr, "fetch_lords_parliamentary_roles_while_lord")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords maiden speeches
-    mds <- fetch_lords_maiden_speeches()
-    write(mds, "fetch_lords_maiden_speeches")
+    lms <- fetch_lords_maiden_speeches()
+    write(lms, "fetch_lords_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords maiden speeches with from and to dates
-    mds <- fetch_lords_maiden_speeches(
+    lms <- fetch_lords_maiden_speeches(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(mds, "fetch_lords_maiden_speeches_from_to")
+    write(lms, "fetch_lords_maiden_speeches_from_to")
+    Sys.sleep(API_PAUSE_TIME)
+
+    # Fetch Lords addresses
+    ma <- fetch_lords_addresses()
+    write(ma, "fetch_lords_addresses")
     Sys.sleep(API_PAUSE_TIME)
 }
 

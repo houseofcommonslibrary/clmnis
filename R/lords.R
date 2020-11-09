@@ -400,8 +400,8 @@ fetch_lords_contested_elections <- function(
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 #' @param while_lord A boolean indicating whether to filter the government roles
-#' to include only those roles that were held while each individual was serving
-#' as a Lord. The default value is TRUE.
+#'   to include only those roles that were held while each individual was serving
+#'   as a Lord. The default value is TRUE.
 #' @return A tibble of government roles for each Lord, with one row per
 #'   government role.
 #' @export
@@ -490,8 +490,8 @@ fetch_lords_government_roles <- function(
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 #' @param while_lord A boolean indicating whether to filter the opposition roles
-#' to include only those roles that were held while each individual was serving
-#' as a Lord. The default value is TRUE.
+#'   to include only those roles that were held while each individual was serving
+#'   as a Lord. The default value is TRUE.
 #' @return A tibble of opposition roles for each Lord, with one row per
 #'   opposition role.
 #' @export
@@ -579,8 +579,8 @@ fetch_lords_opposition_roles <- function(
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
 #' @param while_lord A boolean indicating whether to filter the parliamentary roles
-#' to include only those roles that were held while each individual was serving
-#' as a Lord. The default value is TRUE.
+#'   to include only those roles that were held while each individual was serving
+#'   as a Lord. The default value is TRUE.
 #' @return A tibble of parliamentary roles for each Lord, with one row per
 #'   parliamentary role.
 #' @export
@@ -662,7 +662,6 @@ fetch_lords_parliamentary_roles <- function(
 #'   it should specify the date in ISO 8601 date format e.g. 2000-12-31'. The
 #'   default value is NA, which means no records are excluded on the basis
 #'   of the on_date.
-
 #' @return A tibble of maiden speeches for each Lord, with one row per
 #'   maiden speech.
 #' @export
@@ -703,3 +702,35 @@ fetch_lords_maiden_speeches <- function(
         dplyr::ungroup() %>%
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
+
+#' Fetch addresses for all Lords
+#'
+#' \code{fetch_lords_addresses} fetches data from the Members Names platform
+#' showing contact details for each Lord.
+#'
+#' Addresses can represent contact information of different types, including
+#' phsyical addresses, phone, fax, email, website, and social media. These
+#' addresses are not time bound in MNIS so date filtering is not available for
+#' this function.
+#'
+#' @return A tibble of addresses for each Lord, with one row per address.
+#' @export
+
+fetch_lords_addresses <- function() {
+
+    # Check cache
+    if (!exists(CACHE_LORDS_ADDRESSES_RAW, envir = cache)) {
+        addresses <- fetch_lords_addresses_raw()
+    } else {
+        addresses <- get(CACHE_LORDS_ADDRESSES_RAW, envir = cache)
+    }
+
+    # Tidy up and return
+    addresses %>%
+        dplyr::arrange(
+            .data$family_name,
+            .data$address_type_mnis_id) %>%
+        dplyr::ungroup() %>%
+        dplyr::mutate_if(is.character, stringr::str_trim)
+}
+

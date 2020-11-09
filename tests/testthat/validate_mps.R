@@ -56,6 +56,11 @@ fetch_mps_mocks_data <- function() {
     mms <- fetch_query_data(house = HOUSE_COMMONS, "MaidenSpeeches")
     write(mms, "mps_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
+
+    # Download MPs addresses
+    ma <- fetch_query_data(house = HOUSE_COMMONS, "Addresses")
+    write(ma, "mps_addresses")
+    Sys.sleep(API_PAUSE_TIME)
 }
 
 #' Fetch validation data for unit tests of MPs
@@ -75,116 +80,121 @@ fetch_mps_validation_data <- function() {
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Commons memberships
-    mm <- fetch_commons_memberships()
-    write(mm, "fetch_mps_memberships")
+    mhm <- fetch_commons_memberships()
+    write(mhm, "fetch_mps_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Commons memberships with from and to dates
-    mm <- fetch_commons_memberships(
+    mhm <- fetch_commons_memberships(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(mm, "fetch_mps_memberships_from_to")
+    write(mhm, "fetch_mps_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs party memberships
-    pm <- fetch_mps_party_memberships()
-    write(pm, "fetch_mps_party_memberships")
+    mpm <- fetch_mps_party_memberships()
+    write(mpm, "fetch_mps_party_memberships")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs party memberships with from and to dates
-    pm <- fetch_mps_party_memberships(
+    mpm <- fetch_mps_party_memberships(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(pm, "fetch_mps_party_memberships_from_to")
+    write(mpm, "fetch_mps_party_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs party memberships with while_mp
-    pm <- fetch_mps_party_memberships(while_mp = FALSE)
-    write(pm, "fetch_mps_party_memberships_while_mp")
+    mpm <- fetch_mps_party_memberships(while_mp = FALSE)
+    write(mpm, "fetch_mps_party_memberships_while_mp")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs party memberships with collapse
-    pm <- fetch_mps_party_memberships(collapse = TRUE)
-    write(pm, "fetch_mps_party_memberships_collapse")
+    mpm <- fetch_mps_party_memberships(collapse = TRUE)
+    write(mpm, "fetch_mps_party_memberships_collapse")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs other parliament memberships
-    op <- fetch_mps_other_parliaments()
-    write(op, "fetch_mps_other_parliaments")
+    mop <- fetch_mps_other_parliaments()
+    write(mop, "fetch_mps_other_parliaments")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs other parliament memberships with from and to dates
-    op <- fetch_mps_other_parliaments(
+    mop <- fetch_mps_other_parliaments(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(op, "fetch_mps_other_parliaments_from_to")
+    write(mop, "fetch_mps_other_parliaments_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs contested elections
-    ce <- fetch_mps_contested_elections()
-    write(ce, "fetch_mps_contested_elections")
+    mce <- fetch_mps_contested_elections()
+    write(mce, "fetch_mps_contested_elections")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs contested elections with from and to dates
-    ce <- fetch_mps_contested_elections(
+    mce <- fetch_mps_contested_elections(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(ce, "fetch_mps_contested_elections_from_to")
+    write(mce, "fetch_mps_contested_elections_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs government roles
-    gor <- fetch_mps_government_roles()
-    write(gor, "fetch_mps_government_roles")
+    mgr <- fetch_mps_government_roles()
+    write(mgr, "fetch_mps_government_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs government roles with from and to dates
-    gor <- fetch_mps_government_roles(
+    mgr <- fetch_mps_government_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(gor, "fetch_mps_government_roles_from_to")
+    write(mgr, "fetch_mps_government_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs government roles with while_mp
-    gor <- fetch_mps_government_roles(while_mp = FALSE)
-    write(gor, "fetch_mps_government_roles_while_mp")
+    mgr <- fetch_mps_government_roles(while_mp = FALSE)
+    write(mgr, "fetch_mps_government_roles_while_mp")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs opposition roles
-    opr <- fetch_mps_opposition_roles()
-    write(opr, "fetch_mps_opposition_roles")
+    mor <- fetch_mps_opposition_roles()
+    write(mor, "fetch_mps_opposition_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs opposition roles with from and to dates
-    opr <- fetch_mps_opposition_roles(
+    mor <- fetch_mps_opposition_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(opr, "fetch_mps_opposition_roles_from_to")
+    write(mor, "fetch_mps_opposition_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs opposition roles with while_mp
-    opr <- fetch_mps_opposition_roles(while_mp = FALSE)
-    write(opr, "fetch_mps_opposition_roles_while_mp")
+    mor <- fetch_mps_opposition_roles(while_mp = FALSE)
+    write(mor, "fetch_mps_opposition_roles_while_mp")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs parliamentary roles
-    pmr <- fetch_mps_parliamentary_roles()
-    write(pmr, "fetch_mps_parliamentary_roles")
+    mpr <- fetch_mps_parliamentary_roles()
+    write(mpr, "fetch_mps_parliamentary_roles")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs parliamentary roles with from and to dates
-    pmr <- fetch_mps_parliamentary_roles(
+    mpr <- fetch_mps_parliamentary_roles(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(pmr, "fetch_mps_parliamentary_roles_from_to")
+    write(mpr, "fetch_mps_parliamentary_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs parliamentary roles with while_mp
-    pmr <- fetch_mps_parliamentary_roles(while_mp = FALSE)
-    write(pmr, "fetch_mps_parliamentary_roles_while_mp")
+    mpr <- fetch_mps_parliamentary_roles(while_mp = FALSE)
+    write(mpr, "fetch_mps_parliamentary_roles_while_mp")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs maiden speeches
-    mds <- fetch_mps_maiden_speeches()
-    write(mds, "fetch_mps_maiden_speeches")
+    mms <- fetch_mps_maiden_speeches()
+    write(mms, "fetch_mps_maiden_speeches")
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs maiden speeches with from and to dates
-    mds <- fetch_mps_maiden_speeches(
+    mms <- fetch_mps_maiden_speeches(
         from_date = "2017-06-08", to_date = "2017-06-08")
-    write(mds, "fetch_mps_maiden_speeches_from_to")
+    write(mms, "fetch_mps_maiden_speeches_from_to")
+    Sys.sleep(API_PAUSE_TIME)
+
+    # Fetch MPs addresses
+    ma <- fetch_mps_addresses()
+    write(ma, "fetch_mps_addresses")
     Sys.sleep(API_PAUSE_TIME)
 }
 

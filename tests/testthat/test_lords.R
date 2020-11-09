@@ -17,7 +17,8 @@ mock_fetch_query_data <- function(house, data_output) {
         "GovernmentPosts" = read("lords_government_roles"),
         "OppositionPosts" = read("lords_opposition_roles"),
         "ParliamentaryPosts" = read("lords_parliamentary_roles"),
-        "MaidenSpeeches" = read("lords_maiden_speeches")
+        "MaidenSpeeches" = read("lords_maiden_speeches"),
+        "Addresses" = read("lords_addresses")
     )
 }
 
@@ -265,6 +266,36 @@ test_that("fetch_lords_maiden_speeches processes results correctly.", {
             from_date = "2017-06-08",
             to_date = "2017-06-08")
         exp <- readRDS("data/fetch_lords_maiden_speeches_from_to.RData")
+        compare_obs_exp(obs, exp, cols, "mnis_id")
+    })
+})
+
+test_that("fetch_lords_addresses processes results correctly.", {
+    with_mock("clmnis::fetch_query_data" = mock_fetch_query_data, {
+
+        cols <- c(
+            "mnis_id",
+            "given_name",
+            "family_name",
+            "display_name",
+            "address_type_mnis_id",
+            "address_type",
+            "address_is_preffered",
+            "address_is_physical",
+            "address_note",
+            "address_1",
+            "address_2",
+            "address_3",
+            "address_4",
+            "address_5",
+            "postcode",
+            "phone",
+            "fax",
+            "email",
+            "address_other")
+
+        obs <- fetch_lords_addresses()
+        exp <- readRDS("data/fetch_lords_addresses.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
 })
