@@ -25,7 +25,7 @@ The filtering performed using these arguments is inclusive: a row is returned if
 
 ## MPs
 
-### Core MPs datasets
+### MPs core datasets
 These are functions that return core datasets on Members of the House of Commons (MPs) from the MNIS API. Use `fetch_mps` to fetch the MPs and the other functions to fetch data on their house memberships, parties, roles etc. There is a one-to-many relationship between the data returned from `fetch_mps` and the data returned from the other functions. You can synthesise a single dataset that you need for a particular analysis by joining across these tables. 
 
 Some MP functions have an optional argument called ```while_mp```, which filters the data to include only those rows that coincide with the period when the individual was serving in the House of Commons. This is sometimes necessary because someone who serves in the House of Commons may later serve in the House of Lords and may hold different roles while serving in both Houses. When this argument is set to *FALSE* these functions will return all relevant records for each individual, even if the records themselves relate to periods when the individual was not an MP.
@@ -144,7 +144,7 @@ Addresses can represent contact information of different types, including phsyic
 
 ## Lords
 
-### Core Lords datasets
+### Lords core datasets
 These are functions that return core datasets on Members of the House of Lords from the MNIS API. Use `fetch_lords` to fetch the Lords and the other functions to fetch data on their house memberships, parties, roles etc. There is a one-to-many relationship between the data returned from `fetch_lords` and the data returned from the other functions. You can synthesise a single dataset that you need for a particular analysis by joining across these tables. 
 
 Some Lords functions have an optional argument called ```while_lord```, which filters the rows to include only those records that coincide with the period when the individual was serving in the House of Lords. This is sometimes necessary because someone who serves in the House of Lords may previously have served in the House of Commons and may have held different roles while serving in both Houses. When this argument is set to *FALSE* these functions will return all relevant records for each individual, even if the records themselves relate to periods when the individual was not a Lord.
