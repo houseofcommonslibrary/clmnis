@@ -83,9 +83,6 @@ fetch_mps_party_memberships_raw <- function() {
     # Fetch raw party membership data
     party_memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
 
-    # Filter house
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, .data$House == "Commons")
-
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
