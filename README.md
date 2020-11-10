@@ -33,6 +33,7 @@ Some MP functions have an optional argument called ```while_mp```, which filters
 ---
 
 __fetch_mps__
+
 Fetch a dataframe of key details about each MP, with one row per MP. This dataframe contains summary details for each MP, such as names, gender, and dates of birth and death.
 
 ```r
@@ -44,6 +45,7 @@ The ```from_date```, ```to_date``` and ```on_date``` arguments can be used to fi
 ---
 
 __fetch_commons_memberships__
+
 Fetch a dataframe of Commons memberships for each MP, with one row per Commons membership.
 
 ```r
@@ -55,6 +57,7 @@ The memberships dates are processed to impose consistent rules on the start and 
 --- 
 
 __fetch_mps_party_memberships__
+
 Fetch a dataframe of party memberships for each MP, with one row per party membership.
 
 ```r
@@ -68,6 +71,7 @@ Note that party memberships are not necessarily closed when an individual stops 
 --- 
 
 __fetch_mps_other_parliaments__
+
 Fetch a dataframe of memberships of other parliaments for each MP, with one row per other parliament membership.
 
 ```r
@@ -77,6 +81,7 @@ clmnis::fetch_mps_other_parliaments(from_date = NA, to_date = NA, on_date = NA)
 ---
 
 __fetch_mps_contested_elections__
+
 Fetch a dataframe of contested parliamentary elections for each MP, with one row per contested election.
 
 ```r
@@ -86,6 +91,7 @@ clmnis::fetch_mps_contested_elections(from_date = NA, to_date = NA, on_date = NA
 ---
 
 __fetch_mps_government_roles__
+
 Fetch a dataframe of government roles for each MP, with one row per government role.
 
 ```r
@@ -95,6 +101,7 @@ clmnis::fetch_mps_government_roles(from_date = NA, to_date = NA, on_date = NA, w
 --- 
 
 __fetch_mps_opposition_roles__
+
 Fetch a dataframe of opposition roles for each MP, with one row per opposition role.
 
 ```r
@@ -104,6 +111,7 @@ clmnis::fetch_mps_opposition_roles(from_date = NA, to_date = NA, on_date = NA, w
 ---
 
 __fetch_mps_parliamentary_roles__
+
 Fetch a dataframe of parliamentary roles for each MP, with one row per parliamentary role.
 
 ```r
@@ -113,6 +121,7 @@ clmnis::fetch_mps_parliamentary_roles(from_date = NA, to_date = NA, on_date = NA
 ---
 
 __fetch_mps_maiden_speeches__
+
 Fetch a dataframe of maiden speeches for each MP, with one row per maiden speech.
 
 ```r
@@ -122,6 +131,7 @@ clmnis::fetch_mps_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
 ---
 
 __fetch_mps_addresses__
+
 Fetch a dataframe of addresses showing contact details for each MP, with one row per address.
 
 ```r
@@ -142,6 +152,7 @@ Some Lords functions have an optional argument called ```while_lord```, which fi
 ---
 
 __fetch_lords__
+
 Fetch a dataframe of key details about each Lord, with one row per Lord. This dataframe contains summary details for each Lord, such as names, gender, and dates of birth and death.
 
 ```r
@@ -153,6 +164,7 @@ The ```from_date```, ```to_date``` and ```on_date``` arguments can be used to fi
 ---
 
 __fetch_lords_memberships__
+
 Fetch a dataframe of Lords memberships for each Lord, with one row per Lords membership.
 
 ```r
@@ -162,6 +174,7 @@ clmnis::fetch_lords_memberships(from_date = NA, to_date = NA, on_date = NA)
 --- 
 
 __fetch_lords_party_memberships__
+
 Fetch a dataframe of party memberships for each Lord, with one row per party membership.
 
 ```r
@@ -175,6 +188,7 @@ Note that party memberships are not necessarily closed when an individual stops 
 --- 
 
 __fetch_lords_other_parliaments__
+
 Fetch a dataframe of memberships of other parliaments for each Lord, with one row per other parliament membership.
 
 ```r
@@ -184,6 +198,7 @@ clmnis::fetch_lords_other_parliaments(from_date = NA, to_date = NA, on_date = NA
 ---
 
 __fetch_lords_contested_elections__
+
 Fetch a dataframe of contested parliamentary elections for each Lord, with one row per contested election.
 
 ```r
@@ -193,6 +208,7 @@ clmnis::fetch_lords_contested_elections(from_date = NA, to_date = NA, on_date = 
 ---
 
 __fetch_lords_government_roles__
+
 Fetch a dataframe of government roles for each Lord, with one row per government role.
 
 ```r
@@ -202,6 +218,7 @@ clmnis::fetch_lords_government_roles(from_date = NA, to_date = NA, on_date = NA,
 --- 
 
 __fetch_lords_opposition_roles__
+
 Fetch a dataframe of opposition roles for each Lord, with one row per opposition role.
 
 ```r
@@ -211,6 +228,7 @@ clmnis::fetch_lords_opposition_roles(from_date = NA, to_date = NA, on_date = NA,
 ---
 
 __fetch_lords_parliamentary_roles__
+
 Fetch a dataframe of parliamentary roles for each Lord, with one row per parliamentary role.
 
 ```r
@@ -220,6 +238,7 @@ clmnis::fetch_lords_parliamentary_roles(from_date = NA, to_date = NA, on_date = 
 ---
 
 __fetch_lords_maiden_speeches__
+
 Fetch a dataframe of maiden speeches for each Lord, with one row per maiden speech.
 
 ```r
@@ -229,6 +248,7 @@ clmnis::fetch_lords_maiden_speeches(from_date = NA, to_date = NA, on_date = NA)
 ---
 
 __fetch_lords_addresses__
+
 Fetch a dataframe of addresses showing contact details for each Lord, with one row per address.
 
 ```r
