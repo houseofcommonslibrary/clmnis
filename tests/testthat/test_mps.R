@@ -33,6 +33,8 @@ test_that("fetch_mps processes results correctly.", {
             "family_name",
             "display_name",
             "full_title",
+            "current_status",
+            "current_status_reason",
             "gender",
             "date_of_birth",
             "date_of_death")

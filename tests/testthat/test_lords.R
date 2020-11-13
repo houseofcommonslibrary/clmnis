@@ -34,6 +34,8 @@ test_that("fetch_lords processes results correctly.", {
             "display_name",
             "full_title",
             "lord_type",
+            "current_status",
+            "current_status_reason",
             "gender",
             "date_of_birth",
             "date_of_death")

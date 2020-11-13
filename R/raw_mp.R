@@ -18,6 +18,8 @@ fetch_mps_raw <- function() {
         family_name = mps_raw$BasicDetails$GivenSurname,
         display_name = mps_raw$DisplayAs,
         full_title = mps_raw$FullTitle,
+        current_status = mps_raw$CurrentStatus$Name,
+        current_status_reason = mps_raw$CurrentStatus$Reason,
         gender = mps_raw$Gender,
         date_of_birth = mps_raw$DateOfBirth,
         date_of_death = mps_raw$DateOfDeath)

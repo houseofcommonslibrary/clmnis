@@ -19,6 +19,8 @@ fetch_lords_raw <- function() {
         display_name = lords_raw$DisplayAs,
         full_title = lords_raw$FullTitle,
         lord_type = lords_raw$MemberFrom,
+        current_status = lords_raw$CurrentStatus$Name,
+        current_status_reason = lords_raw$CurrentStatus$Reason,
         gender = lords_raw$Gender,
         date_of_birth = lords_raw$DateOfBirth,
         date_of_death = lords_raw$DateOfDeath)
