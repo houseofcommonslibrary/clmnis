@@ -146,7 +146,7 @@ Addresses can represent contact information of different types, including phsyic
 
 These functions extract specific sets of contact details from the addresses data returned by `fetch_mps_addresses`. This data can also be extracted from the addresses table manually, but these functions provide a more conventient way to get contact details of a particular type.
 
-Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for MPs serving during a particular period. Specifically, the functions call `fetch_mps` with these arguments and then filter the addresses returned from `fetch_addresses` to include contact details for just those MPs. The filtering rules are therefore the same as those described for `fetch_mps`.
+Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for MPs serving during a particular period. Specifically, the functions call `fetch_mps` with these arguments and then filters the addresses returned from `fetch_addresses` to include contact details for just those MPs. The filtering rules are therefore the same as those described for `fetch_mps`.
 
 Contact information stored in MNIS is adminstrative data and may contain data errors or other unexpected formatting. If you are using this data for computational analysis you should be prepared to catch and handle errors.
 
@@ -363,7 +363,7 @@ Addresses can represent contact information of different types, including phsyic
 
 These functions extract specific sets of contact details from the addresses data returned by `fetch_lords_addresses`. This data can also be extracted from the addresses table manually, but these functions provide a more conventient way to get contact details of a particular type.
 
-Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for Lords serving during a particular period. Specifically, the functions call `fetch_lords` with these arguments and then filter the addresses returned from `fetch_addresses` to include contact details for just those Lords. The filtering rules are therefore the same as those described for `fetch_lords`.
+Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for Lords serving during a particular period. Specifically, the functions call `fetch_lords` with these arguments and then filters the addresses returned from `fetch_addresses` to include contact details for just those Lords. The filtering rules are therefore the same as those described for `fetch_lords`.
 
 Contact information stored in MNIS is adminstrative data and may contain data errors or other unexpected formatting. If you are using this data for computational analysis you should be prepared to catch and handle errors.
 
