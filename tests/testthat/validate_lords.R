@@ -75,7 +75,7 @@ fetch_lords_validation_data <- function() {
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch Lords with from and to dates
-    l <- fetch_lords(from_date = "2017-06-08", to_date = "2017-06-08")
+    l <- fetch_lords(from_date = TEST_DATE, to_date = TEST_DATE)
     write(l, "fetch_lords_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -86,7 +86,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords memberships with from and to dates
     lhm <- fetch_lords_memberships(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lhm, "fetch_lords_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -97,7 +97,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords party memberships with from and to dates
     lpm <- fetch_lords_party_memberships(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lpm, "fetch_lords_party_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -118,7 +118,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords other parliament memberships with from and to dates
     lop <- fetch_lords_other_parliaments(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lop, "fetch_lords_other_parliaments_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -129,7 +129,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords contested elections with from and to dates
     lce <- fetch_lords_contested_elections(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lce, "fetch_lords_contested_elections_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -140,7 +140,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords government roles with from and to dates
     lgr <- fetch_lords_government_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lgr, "fetch_lords_government_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -156,7 +156,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords opposition roles with from and to dates
     lor <- fetch_lords_opposition_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lor, "fetch_lords_opposition_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -172,7 +172,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords parliamentary roles with from and to dates
     lpr <- fetch_lords_parliamentary_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lpr, "fetch_lords_parliamentary_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -188,7 +188,7 @@ fetch_lords_validation_data <- function() {
 
     # Fetch Lords maiden speeches with from and to dates
     lms <- fetch_lords_maiden_speeches(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(lms, "fetch_lords_maiden_speeches_from_to")
     Sys.sleep(API_PAUSE_TIME)
 

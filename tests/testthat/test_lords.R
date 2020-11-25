@@ -44,7 +44,7 @@ test_that("fetch_lords processes results correctly.", {
         exp <- readRDS("data/fetch_lords.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
-        obs <- fetch_lords(from_date = "2017-06-08", to_date = "2017-06-08")
+        obs <- fetch_lords(from_date = TEST_DATE, to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
@@ -66,8 +66,8 @@ test_that("fetch_lords_memberships processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_memberships(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_memberships_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
@@ -91,8 +91,8 @@ test_that("fetch_lords_party_memberships processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_party_memberships(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_party_memberships_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
@@ -124,8 +124,8 @@ test_that("fetch_lords_other_parliaments processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_other_parliaments(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_other_parliaments_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
@@ -150,8 +150,8 @@ test_that("fetch_lords_contested_elections processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_contested_elections(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_contested_elections_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
@@ -176,8 +176,8 @@ test_that("fetch_lords_government_roles processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_government_roles(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_government_roles_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
@@ -206,8 +206,8 @@ test_that("fetch_lords_opposition_roles processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_opposition_roles(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_opposition_roles_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
@@ -236,8 +236,8 @@ test_that("fetch_lords_parliamentary_roles processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_parliamentary_roles(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_parliamentary_roles_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
@@ -265,8 +265,8 @@ test_that("fetch_lords_maiden_speeches processes results correctly.", {
         compare_obs_exp(obs, exp, cols, "mnis_id")
 
         obs <- fetch_lords_maiden_speeches(
-            from_date = "2017-06-08",
-            to_date = "2017-06-08")
+            from_date = TEST_DATE,
+            to_date = TEST_DATE)
         exp <- readRDS("data/fetch_lords_maiden_speeches_from_to.RData")
         compare_obs_exp(obs, exp, cols, "mnis_id")
     })
@@ -282,7 +282,7 @@ test_that("fetch_lords_addresses processes results correctly.", {
             "display_name",
             "address_type_mnis_id",
             "address_type",
-            "address_is_preffered",
+            "address_is_preferred",
             "address_is_physical",
             "address_note",
             "address_1",

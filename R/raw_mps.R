@@ -1,66 +1,65 @@
 ### Functions for downloading raw query data
 
-# Raw Lord queries --------------------------------------------------------------
+# Raw MP queries --------------------------------------------------------------
 
-#' Fetch key details: Lords
+#' Fetch key details: MPs
 #'
 #' @keywords internal
 
-fetch_lords_raw <- function() {
+fetch_mps_raw <- function() {
 
     # Fetch raw
-    lords_raw <- fetch_query_data(house = HOUSE_LORDS, "BasicDetails")
+    mps_raw <- fetch_query_data(house = HOUSE_COMMONS, "BasicDetails")
 
     # Extract data
-    lords <- tibble::tibble(
-        mnis_id = lords_raw$`@Member_Id`,
-        given_name = lords_raw$BasicDetails$GivenForename,
-        family_name = lords_raw$BasicDetails$GivenSurname,
-        display_name = lords_raw$DisplayAs,
-        full_title = lords_raw$FullTitle,
-        lord_type = lords_raw$MemberFrom,
-        current_status = lords_raw$CurrentStatus$Name,
-        current_status_reason = lords_raw$CurrentStatus$Reason,
-        gender = lords_raw$Gender,
-        date_of_birth = lords_raw$DateOfBirth,
-        date_of_death = lords_raw$DateOfDeath)
+    mps <- tibble::tibble(
+        mnis_id = mps_raw$`@Member_Id`,
+        given_name = mps_raw$BasicDetails$GivenForename,
+        family_name = mps_raw$BasicDetails$GivenSurname,
+        display_name = mps_raw$DisplayAs,
+        full_title = mps_raw$FullTitle,
+        current_status = mps_raw$CurrentStatus$Name,
+        current_status_reason = mps_raw$CurrentStatus$Reason,
+        gender = mps_raw$Gender,
+        date_of_birth = mps_raw$DateOfBirth,
+        date_of_death = mps_raw$DateOfDeath)
 
-    # Tidy and return"
-    lords <- process_missing_values(lords, "date_of_birth")
-    lords <- process_missing_values(lords, "date_of_death")
-    lords$date_of_birth <- as.Date(unlist(lords$date_of_birth))
-    lords$date_of_death <- as.Date(unlist(lords$date_of_death))
-    lords
+    # Tidy and return
+    mps <- process_missing_values(mps, "date_of_birth")
+    mps <- process_missing_values(mps, "date_of_death")
+    mps$date_of_birth <- as.Date(unlist(mps$date_of_birth))
+    mps$date_of_death <- as.Date(unlist(mps$date_of_death))
+    mps
 }
 
-#' Fetch memberships: Lords
+#' Fetch memberships: MPs
 #'
 #' @keywords internal
 
-fetch_lords_memberships_raw <- function() {
+fetch_commons_memberships_raw <- function() {
 
     # Fetch raw
-    memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "HouseMemberships")
+    memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Constituencies")
 
     # Define a function to extract data
-    extract_lords_memberships <- function(memberships) {
+    extract_commons_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
             memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
-            memberships <- purrr::map_df(memberships$HouseMemberships$HouseMembership, function(member) {
+            memberships <- purrr::map_df(memberships$Constituencies$Constituency, function(member) {
                 memberships <- tibble::tibble(
-                    house_name = member$House,
+                    constituency_mnis_id = member$`@Id`,
+                    constituency_name = member$Name,
                     seat_incumbency_start_date = member$StartDate,
                     seat_incumbency_end_date = as.character(member$EndDate))
-                })
+            })
             memberships$mnis_id <- mnis_id
             memberships
         })
     }
 
     # Extract data
-    memberships <- extract_lords_memberships(memberships_raw) %>%
-        dplyr::filter(.data$house_name == "Lords")
+    memberships <- extract_commons_memberships(memberships_raw)
 
     # Tidy
     memberships <- process_missing_values(memberships, "seat_incumbency_end_date")
@@ -68,27 +67,23 @@ fetch_lords_memberships_raw <- function() {
     memberships$seat_incumbency_end_date <- as.Date(memberships$seat_incumbency_end_date)
 
     #  Combine
-    memberships <- process_lords_output(memberships) %>%
-        dplyr::select(-.data$house_name)
+    memberships <- process_mps_output(memberships)
 
     # Cache
-    assign(CACHE_LORDS_MEMBERSHIPS_RAW, memberships, envir = cache)
+    assign(CACHE_COMMONS_MEMBERSHIPS_RAW, memberships, envir = cache)
 
     # Return
     memberships
 }
 
-#' Fetch party memberships: Lords
+#' Fetch party memberships: MPs
 #'
 #' @keywords internal
 
-fetch_lords_party_memberships_raw <- function() {
+fetch_mps_party_memberships_raw <- function() {
 
     # Fetch raw party membership data
-    party_memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Parties")
-
-    # Remove NULL
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, !.data$Parties == "NULL")
+    party_memberships_raw <- fetch_query_data(house = HOUSE_COMMONS, "Parties")
 
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
@@ -116,23 +111,23 @@ fetch_lords_party_memberships_raw <- function() {
     memberships$party_membership_end_date <- as.Date(memberships$party_membership_end_date)
 
     #  Combine
-    memberships <- process_lords_output(memberships)
+    memberships <- process_mps_output(memberships)
 
     # Cache memberships
-    assign(CACHE_LORDS_PARTY_MEMBERSHIPS_RAW, memberships, envir = cache)
+    assign(CACHE_COMMONS_PARTY_MEMBERSHIPS_RAW, memberships, envir = cache)
 
     # Return
     memberships
 }
 
-#' Fetch other parliaments: Lords
+#' Fetch other parliaments: MPs
 #'
 #' @keywords internal
 
-fetch_lords_other_parliaments_raw <- function() {
+fetch_mps_other_parliaments_raw <- function() {
 
     # Fetch raw
-    other_parliaments_raw <-  fetch_query_data(house = HOUSE_LORDS, "OtherParliaments")
+    other_parliaments_raw <- fetch_query_data(house = HOUSE_COMMONS, "OtherParliaments")
 
     # Remove NULL
     other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !.data$OtherParliaments == "NULL")
@@ -163,23 +158,23 @@ fetch_lords_other_parliaments_raw <- function() {
     other_parliaments$other_parliaments_incumbency_end_date <- as.Date(other_parliaments$other_parliaments_incumbency_end_date)
 
     # Combine
-    other_parliaments <- process_lords_output(other_parliaments)
+    other_parliaments <- process_mps_output(other_parliaments)
 
     # Cache
-    assign(CACHE_LORDS_OTHER_PARLIAMENTS_RAW, other_parliaments, envir = cache)
+    assign(CACHE_MPS_OTHER_PARLIAMENTS_RAW, other_parliaments, envir = cache)
 
     # Return
     other_parliaments
 }
 
-#' Fetch contested elections: Lords
+#' Fetch contested elections: MPs
 #'
 #' @keywords internal
 
-fetch_lords_contested_elections_raw <- function() {
+fetch_mps_contested_elections_raw <- function() {
 
     # Fetch raw
-    contested_elections_raw <-  fetch_query_data(house = HOUSE_LORDS, "ElectionsContested")
+    contested_elections_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ElectionsContested")
 
     # Remove NULL
     contested_elections_raw <- dplyr::filter(contested_elections_raw, !.data$ElectionsContested == "NULL")
@@ -210,23 +205,23 @@ fetch_lords_contested_elections_raw <- function() {
     contested_elections$contested_election_date <- as.Date(contested_elections$contested_election_date)
 
     # Combine
-    contested_elections <- process_lords_output(contested_elections)
+    contested_elections <- process_mps_output(contested_elections)
 
     # Cache
-    assign(CACHE_LORDS_CONTESTED_ELECTIONS_RAW, contested_elections, envir = cache)
+    assign(CACHE_MPS_CONTESTED_ELECTIONS_RAW, contested_elections, envir = cache)
 
     # Return
     contested_elections
 }
 
-#' Fetch government roles: Lords
+#' Fetch government roles: MPs
 #'
 #' @keywords internal
 
-fetch_lords_government_roles_raw <- function() {
+fetch_mps_government_roles_raw <- function() {
 
     # Fetch raw
-    government_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "GovernmentPosts")
+    government_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "GovernmentPosts")
 
     # Remove NULL
     government_roles_raw <- dplyr::filter(government_roles_raw, !.data$GovernmentPosts == "NULL")
@@ -249,23 +244,23 @@ fetch_lords_government_roles_raw <- function() {
     government_roles$government_role_incumbency_end_date <- as.Date(government_roles$government_role_incumbency_end_date)
 
     #  Combine
-    government_roles <- process_lords_output(government_roles)
+    government_roles <- process_mps_output(government_roles)
 
     # Cache
-    assign(CACHE_LORDS_GOVERNMENT_ROLES_RAW, government_roles, envir = cache)
+    assign(CACHE_MPS_GOVERNMENT_ROLES_RAW, government_roles, envir = cache)
 
     # Return
     government_roles
 }
 
-#' Fetch opposition roles: Lords
+#' Fetch opposition roles: MPs
 #'
 #' @keywords internal
 
-fetch_lords_opposition_roles_raw <- function() {
+fetch_mps_opposition_roles_raw <- function() {
 
     # Fetch raw
-    opposition_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "OppositionPosts")
+    opposition_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "OppositionPosts")
 
     # Remove NULL
     opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !.data$OppositionPosts == "NULL")
@@ -288,23 +283,23 @@ fetch_lords_opposition_roles_raw <- function() {
     opposition_roles$opposition_role_incumbency_end_date <- as.Date(opposition_roles$opposition_role_incumbency_end_date)
 
     # Combine
-    opposition_roles <- process_lords_output(opposition_roles)
+    opposition_roles <- process_mps_output(opposition_roles)
 
     # Cache
-    assign(CACHE_LORDS_OPPOSITION_ROLES_RAW, opposition_roles, envir = cache)
+    assign(CACHE_MPS_OPPOSITION_ROLES_RAW, opposition_roles, envir = cache)
 
     # Return
     opposition_roles
 }
 
-#' Fetch parliamentary roles: Lords
+#' Fetch parliamentary roles: MPs
 #'
 #' @keywords internal
 
-fetch_lords_parliamentary_roles_raw <- function() {
+fetch_mps_parliamentary_roles_raw <- function() {
 
     # Fetch raw
-    parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "ParliamentaryPosts")
+    parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ParliamentaryPosts")
 
     # Remove NULL
     parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !.data$ParliamentaryPosts == "NULL")
@@ -327,23 +322,23 @@ fetch_lords_parliamentary_roles_raw <- function() {
     parliamentary_roles$parliamentary_role_incumbency_end_date <- as.Date(parliamentary_roles$parliamentary_role_incumbency_end_date)
 
     # Combine
-    parliamentary_roles <- process_lords_output(parliamentary_roles)
+    parliamentary_roles <- process_mps_output(parliamentary_roles)
 
     # Cache
-    assign(CACHE_LORDS_PARLIAMENTARY_ROLES_RAW, parliamentary_roles, envir = cache)
+    assign(CACHE_MPS_PARLIAMENTARY_ROLES_RAW, parliamentary_roles, envir = cache)
 
     # Return
     parliamentary_roles
 }
 
-#' Fetch maiden speeches: Lords
+#' Fetch maiden speeches: MPs
 #'
 #' @keywords internal
 
-fetch_lords_maiden_speeches_raw <- function() {
+fetch_mps_maiden_speeches_raw <- function() {
 
     # Fetch raw
-    maiden_speeches_raw <-  fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
+    maiden_speeches_raw <-  fetch_query_data(house = HOUSE_COMMONS, "MaidenSpeeches")
 
     # Remove NULL
     maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !.data$MaidenSpeeches == "NULL")
@@ -362,26 +357,26 @@ fetch_lords_maiden_speeches_raw <- function() {
 
     # Tidy
     maiden_speeches$maiden_speech_date <- as.Date(maiden_speeches$maiden_speech_date)
-    maiden_speeches <- maiden_speeches %>% dplyr::filter(.data$maiden_speech_house == "Lords")
+    maiden_speeches <- maiden_speeches %>% dplyr::filter(.data$maiden_speech_house == "Commons")
 
     # Combine
-    maiden_speeches <- process_lords_output(maiden_speeches)
+    maiden_speeches <- process_mps_output(maiden_speeches)
 
     # Cache
-    assign(CACHE_LORDS_MAIDEN_SPEECHES_RAW, maiden_speeches, envir = cache)
+    assign(CACHE_MPS_MAIDEN_SPEECHES_RAW, maiden_speeches, envir = cache)
 
     # Return
     maiden_speeches
 }
 
-#' Fetch addresses: Lords
+#' Fetch addresses: MPs
 #'
 #' @keywords internal
 
-fetch_lords_addresses_raw <- function() {
+fetch_mps_addresses_raw <- function() {
 
     # Fetch raw
-    addresses_raw <-  fetch_query_data(house = HOUSE_LORDS, "Addresses")
+    addresses_raw <-  fetch_query_data(house = HOUSE_COMMONS, "Addresses")
 
     # Remove NULL
     addresses_raw <- dplyr::filter(addresses_raw, !.data$Addresses == "NULL")
@@ -395,7 +390,7 @@ fetch_lords_addresses_raw <- function() {
             .data$mnis_id,
             address_type_mnis_id = .data$`@Type_Id`,
             address_type  = .data$Type,
-            address_is_preffered  = .data$IsPreferred,
+            address_is_preferred  = .data$IsPreferred,
             address_is_physical  = .data$IsPhysical,
             address_note  = .data$Note,
             address_1  = .data$Address1,
@@ -410,14 +405,14 @@ fetch_lords_addresses_raw <- function() {
             address_other = .data$OtherAddress)
 
     # Tidy
-    addresses$address_is_preffered <- as.logical(addresses$address_is_preffered)
+    addresses$address_is_preferred <- as.logical(addresses$address_is_preferred)
     addresses$address_is_physical <- as.logical(addresses$address_is_physical)
 
     # Combine
-    addresses <- process_lords_output(addresses)
+    addresses <- process_mps_output(addresses)
 
     # Cache
-    assign(CACHE_LORDS_ADDRESSES_RAW, addresses, envir = cache)
+    assign(CACHE_MPS_ADDRESSES_RAW, addresses, envir = cache)
 
     # Return
     addresses

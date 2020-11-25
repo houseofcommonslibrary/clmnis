@@ -4,6 +4,7 @@
 
 READ_TEST_DATA_DIR <- file.path("data")
 WRITE_TEST_DATA_DIR <- file.path("tests", "testthat", "data")
+TEST_DATE <- "2017-06-08"
 
 # Read and write data ---------------------------------------------------------
 

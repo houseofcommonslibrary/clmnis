@@ -142,6 +142,106 @@ Addresses can represent contact information of different types, including phsyic
 
 ---
 
+### MPs contact details
+
+These functions extract specific sets of contact details from the addresses data returned by `fetch_mps_addresses`. This data can also be extracted from the addresses table manually, but these functions provide a more conventient way to get contact details of a particular type.
+
+Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for MPs serving during a particular period. Specifically, the functions call `fetch_mps` with these arguments and then filter the addresses returned from `fetch_addresses` to include contact details for just those MPs. The filtering rules are therefore the same as those described for `fetch_mps`.
+
+Contact information stored in MNIS is adminstrative data and may contain data errors or other unexpected formatting. If you are using this data for computational analysis you should be prepared to catch and handle errors.
+
+---
+
+__fetch_mps_office_addresses__
+
+Fetch a dataframe of physical addresses for each MP, with one row per combination of MP and address.
+
+```r
+clmnis::fetch_mps_office_addresses(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_email_addresses__
+
+Fetch a dataframe of email addresses for each MP, with one row per combination of MP and email address.
+
+```r
+clmnis::fetch_mps_email_addresses(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_phone_numbers__
+
+Fetch a dataframe of phone numbers for each MP, with one row per combination of MP and phone number.
+
+```r
+clmnis::fetch_mps_phone_numbers(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_fax_numbers__
+
+Fetch a dataframe of fax numbers for each MP, with one row per combination of MP and fax number.
+
+```r
+clmnis::fetch_mps_fax_numbers(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_websites__
+
+Fetch a dataframe of websites for each MP, with one row per combination of MP and website.
+
+```r
+clmnis::fetch_mps_websites(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_blogs__
+
+Fetch a dataframe of blogs for each MP, with one row per combination of MP and blog.
+
+```r
+clmnis::fetch_mps_blogs(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_twitter__
+
+Fetch a dataframe of twitter accounts for each MP, with one row per combination of MP and twitter account.
+
+```r
+clmnis::fetch_mps_twitter(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_instagram__
+
+Fetch a dataframe of instagram accounts for each MP, with one row per combination of MP and instagram account.
+
+```r
+clmnis::fetch_mps_instagram(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_mps_facebook__
+
+Fetch a dataframe of facebook accounts for each MP, with one row per combination of MP and facebook account.
+
+```r
+clmnis::fetch_mps_facebook(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
 ## Lords
 
 ### Lords core datasets
@@ -259,3 +359,102 @@ Addresses can represent contact information of different types, including phsyic
 
 ---
 
+### Lords contact details
+
+These functions extract specific sets of contact details from the addresses data returned by `fetch_lords_addresses`. This data can also be extracted from the addresses table manually, but these functions provide a more conventient way to get contact details of a particular type.
+
+Data in the addresses table is not time bound, so the time filtering arguments for these functions are used to request data for Lords serving during a particular period. Specifically, the functions call `fetch_lords` with these arguments and then filter the addresses returned from `fetch_addresses` to include contact details for just those Lords. The filtering rules are therefore the same as those described for `fetch_lords`.
+
+Contact information stored in MNIS is adminstrative data and may contain data errors or other unexpected formatting. If you are using this data for computational analysis you should be prepared to catch and handle errors.
+
+---
+
+__fetch_lords_office_addresses__
+
+Fetch a dataframe of physical addresses for each Lord, with one row per combination of Lord and address.
+
+```r
+clmnis::fetch_lords_office_addresses(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_email_addresses__
+
+Fetch a dataframe of email addresses for each Lord, with one row per combination of Lord and email address.
+
+```r
+clmnis::fetch_lords_email_addresses(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_phone_numbers__
+
+Fetch a dataframe of phone numbers for each Lord, with one row per combination of Lord and phone number.
+
+```r
+clmnis::fetch_lords_phone_numbers(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_fax_numbers__
+
+Fetch a dataframe of fax numbers for each Lord, with one row per combination of Lord and fax number.
+
+```r
+clmnis::fetch_lords_fax_numbers(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_websites__
+
+Fetch a dataframe of websites for each Lord, with one row per combination of Lord and website.
+
+```r
+clmnis::fetch_lords_websites(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_blogs__
+
+Fetch a dataframe of blogs for each Lord, with one row per combination of Lord and blog.
+
+```r
+clmnis::fetch_lords_blogs(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_twitter__
+
+Fetch a dataframe of twitter accounts for each Lord, with one row per combination of Lord and twitter account.
+
+```r
+clmnis::fetch_lords_twitter(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_instagram__
+
+Fetch a dataframe of instagram accounts for each Lord, with one row per combination of Lord and instagram account.
+
+```r
+clmnis::fetch_lords_instagram(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---
+
+__fetch_lords_facebook__
+
+Fetch a dataframe of facebook accounts for each Lord, with one row per combination of Lord and facebook account.
+
+```r
+clmnis::fetch_lords_facebook(from_date = NA, to_date = NA, on_date = NA)
+```
+
+---

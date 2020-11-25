@@ -733,4 +733,3 @@ fetch_lords_addresses <- function() {
         dplyr::ungroup() %>%
         dplyr::mutate_if(is.character, stringr::str_trim)
 }
-

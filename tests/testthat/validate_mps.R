@@ -1,6 +1,6 @@
 ### Download data for unit testing MPs
 
-# Imports -------------------------------------------------------------------
+# Imports ---------------------------------------------------------------------
 
 source("tests/testthat/validate.R")
 
@@ -75,7 +75,7 @@ fetch_mps_validation_data <- function() {
     Sys.sleep(API_PAUSE_TIME)
 
     # Fetch MPs with from and to dates
-    m <- fetch_mps(from_date = "2017-06-08", to_date = "2017-06-08")
+    m <- fetch_mps(from_date = TEST_DATE, to_date = TEST_DATE)
     write(m, "fetch_mps_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -86,7 +86,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch Commons memberships with from and to dates
     mhm <- fetch_commons_memberships(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mhm, "fetch_mps_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -97,7 +97,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs party memberships with from and to dates
     mpm <- fetch_mps_party_memberships(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mpm, "fetch_mps_party_memberships_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -118,7 +118,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs other parliament memberships with from and to dates
     mop <- fetch_mps_other_parliaments(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mop, "fetch_mps_other_parliaments_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -129,7 +129,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs contested elections with from and to dates
     mce <- fetch_mps_contested_elections(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mce, "fetch_mps_contested_elections_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -140,7 +140,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs government roles with from and to dates
     mgr <- fetch_mps_government_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mgr, "fetch_mps_government_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -156,7 +156,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs opposition roles with from and to dates
     mor <- fetch_mps_opposition_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mor, "fetch_mps_opposition_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -172,7 +172,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs parliamentary roles with from and to dates
     mpr <- fetch_mps_parliamentary_roles(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mpr, "fetch_mps_parliamentary_roles_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
@@ -188,7 +188,7 @@ fetch_mps_validation_data <- function() {
 
     # Fetch MPs maiden speeches with from and to dates
     mms <- fetch_mps_maiden_speeches(
-        from_date = "2017-06-08", to_date = "2017-06-08")
+        from_date = TEST_DATE, to_date = TEST_DATE)
     write(mms, "fetch_mps_maiden_speeches_from_to")
     Sys.sleep(API_PAUSE_TIME)
 
