@@ -1,7 +1,8 @@
 # clmnis
+
 __clmnis__ is an R package for downloading data from the UK Parliament's [Members Names Information Service](http://data.parliament.uk/membersdataplatform/memberquery.aspx) (MNIS). 
 
-__Please note that this package is currently in beta and should not yet be relied on for research purposes.__
+__Please note that this package is in active development. You should check the accuracy of the data against external sources when using it for research.__
 
 ## Overview
 The MNIS API is the public interface to the UK Parliament's Members Names Information Service, a comprehensive database of all Members sitting in either the House of Commons or House of Lords. The API is flexible and powerful, but it's not very easy to use. The __clmnis__ package is a toolkit that allows you to download and manipulate useful data from the API through a high-level interface, comprising families of functions for downloading specific datasets.
