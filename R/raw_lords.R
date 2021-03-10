@@ -22,13 +22,10 @@ fetch_lords_raw <- function() {
         current_status = lords_raw$CurrentStatus$Name,
         current_status_reason = lords_raw$CurrentStatus$Reason,
         gender = lords_raw$Gender,
-        date_of_birth = lords_raw$DateOfBirth,
         date_of_death = lords_raw$DateOfDeath)
 
     # Tidy and return"
-    lords <- process_missing_values(lords, "date_of_birth")
     lords <- process_missing_values(lords, "date_of_death")
-    lords$date_of_birth <- as.Date(unlist(lords$date_of_birth))
     lords$date_of_death <- as.Date(unlist(lords$date_of_death))
     lords
 }

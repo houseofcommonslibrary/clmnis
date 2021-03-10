@@ -21,13 +21,10 @@ fetch_mps_raw <- function() {
         current_status = mps_raw$CurrentStatus$Name,
         current_status_reason = mps_raw$CurrentStatus$Reason,
         gender = mps_raw$Gender,
-        date_of_birth = mps_raw$DateOfBirth,
         date_of_death = mps_raw$DateOfDeath)
 
     # Tidy and return
-    mps <- process_missing_values(mps, "date_of_birth")
     mps <- process_missing_values(mps, "date_of_death")
-    mps$date_of_birth <- as.Date(unlist(mps$date_of_birth))
     mps$date_of_death <- as.Date(unlist(mps$date_of_death))
     mps
 }

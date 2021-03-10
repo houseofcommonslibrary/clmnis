@@ -36,7 +36,6 @@ test_that("fetch_mps processes results correctly.", {
             "current_status",
             "current_status_reason",
             "gender",
-            "date_of_birth",
             "date_of_death")
 
         obs <- fetch_mps()
