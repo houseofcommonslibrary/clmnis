@@ -244,7 +244,8 @@ filter_memberships <- function(
 
     # Return the target memberships after filtering
     tm_fm_status %>%
-        dplyr::filter(.data$in_membership) %>%
+        #dplyr::filter(.data$in_membership) %>%
+        dplyr::filter(in_membership) %>%
         dplyr::select(-.data$in_membership) %>%
         dplyr::ungroup()
 }
