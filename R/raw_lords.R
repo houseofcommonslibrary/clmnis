@@ -57,7 +57,8 @@ fetch_lords_memberships_raw <- function() {
 
     # Extract data
     memberships <- extract_lords_memberships(memberships_raw) %>%
-        dplyr::filter(.data$house_name == "Lords")
+        #dplyr::filter(.data$house_name == "Lords")
+        dplyr::filter(house_name == "Lords")
 
     # Tidy
     memberships <- process_missing_values(memberships, "seat_incumbency_end_date")

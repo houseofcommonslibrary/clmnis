@@ -51,7 +51,8 @@ fetch_lords <- function(from_date = NA, to_date = NA, on_date = NA) {
             from_date = from_date,
             to_date = to_date)
         lords <- lords %>%
-            dplyr::filter(.data$mnis_id %in% matching_memberships$mnis_id)
+            #dplyr::filter(.data$mnis_id %in% matching_memberships$mnis_id)
+            dplyr::filter(mnis_id %in% matching_memberships$mnis_id)
     }
 
     # Tidy up and return

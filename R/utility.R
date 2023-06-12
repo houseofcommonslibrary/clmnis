@@ -58,7 +58,8 @@ process_member_age <- function(from, to) {
 extract_data_output <- function(data_output, col_section_a, col_section_b) {
    data_output <- purrr::map_df(data_output$`@Member_Id`, function(member) {
       mnis_id <- member
-      data_output <- dplyr::filter(data_output, .data$`@Member_Id` == mnis_id)
+      #data_output <- dplyr::filter(data_output, .data$`@Member_Id` == mnis_id)
+      data_output <- dplyr::filter(data_output, `@Member_Id` == mnis_id)
       data_output <- purrr::pluck(data_output[[{{ col_section_a }}]][[{{ col_section_b }}]])
       data_output[[1]][["mnis_id"]] <- mnis_id
       data_output <- purrr::discard(data_output[[1]], is.null)

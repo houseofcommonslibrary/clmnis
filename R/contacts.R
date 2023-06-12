@@ -177,8 +177,10 @@ fetch_members_websites <- function(
 
     # Fetch websites for members
     websites <- fetch_addresses() %>%
-        dplyr::filter(.data$address_type_mnis_id == 6) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+        #dplyr::filter(.data$address_type_mnis_id == 6) %>%
+        dplyr::filter(address_type_mnis_id == 6) %>%
+      #  dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(! is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -355,8 +357,10 @@ fetch_members_facebook <- function(
 
     # Fetch Facebook accounts for members
     accounts <- fetch_addresses() %>%
-        dplyr::filter(.data$address_type_mnis_id == 8) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+       # dplyr::filter(.data$address_type_mnis_id == 8) %>%
+    #    dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(address_type_mnis_id == 8) %>%
+        dplyr::filter(!is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
