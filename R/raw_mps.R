@@ -42,7 +42,7 @@ fetch_commons_memberships_raw <- function() {
     extract_commons_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
-            memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
+            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
             memberships <- purrr::map_df(memberships$Constituencies$Constituency, function(member) {
                 memberships <- tibble::tibble(
                     constituency_mnis_id = member$`@Id`,
@@ -128,7 +128,7 @@ fetch_mps_other_parliaments_raw <- function() {
     other_parliaments_raw <- fetch_query_data(house = HOUSE_COMMONS, "OtherParliaments")
 
     # Remove NULL
-    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !.data$OtherParliaments == "NULL")
+    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
 
     # Define a function to extract data
     extract_other_parliaments <- function(other_parliaments) {
@@ -176,7 +176,7 @@ fetch_mps_contested_elections_raw <- function() {
     contested_elections_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ElectionsContested")
 
     # Remove NULL
-    contested_elections_raw <- dplyr::filter(contested_elections_raw, !.data$ElectionsContested == "NULL")
+    contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
 
     # Define a function to extract data
     extract_contested_elections <- function(contested_elections) {
@@ -303,7 +303,7 @@ fetch_mps_parliamentary_roles_raw <- function() {
     parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_COMMONS, "ParliamentaryPosts")
 
     # Remove NULL
-    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !.data$ParliamentaryPosts == "NULL")
+    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
 
     # Extract data
     parliamentary_roles <- extract_data_output(
@@ -359,7 +359,7 @@ fetch_mps_maiden_speeches_raw <- function() {
 
     # Tidy
     maiden_speeches$maiden_speech_date <- as.Date(maiden_speeches$maiden_speech_date)
-    maiden_speeches <- maiden_speeches %>% dplyr::filter(.data$maiden_speech_house == "Commons")
+    maiden_speeches <- maiden_speeches %>% dplyr::filter(maiden_speech_house == "Commons")
 
     # Combine
     maiden_speeches <- process_mps_output(maiden_speeches)

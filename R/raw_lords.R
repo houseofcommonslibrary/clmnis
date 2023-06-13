@@ -43,7 +43,7 @@ fetch_lords_memberships_raw <- function() {
     extract_lords_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
-            memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
+            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
             memberships <- purrr::map_df(memberships$HouseMemberships$HouseMembership, function(member) {
                 memberships <- tibble::tibble(
                     house_name = member$House,
@@ -86,13 +86,13 @@ fetch_lords_party_memberships_raw <- function() {
     party_memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Parties")
 
     # Remove NULL
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, !.data$Parties == "NULL")
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, !Parties == "NULL")
 
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
         memberships <- purrr::map_df(memberships$`@Member_Id`, function(member) {
             mnis_id <- member
-            memberships <- dplyr::filter(memberships, .data$`@Member_Id` == mnis_id)
+            memberships <- dplyr::filter(memberships, `@Member_Id` == mnis_id)
             memberships <- purrr::map_df(memberships$Parties$Party, function(member) {
                 memberships <- tibble::tibble(
                     party_mnis_id = member$`@Id`,
@@ -133,13 +133,13 @@ fetch_lords_other_parliaments_raw <- function() {
     other_parliaments_raw <-  fetch_query_data(house = HOUSE_LORDS, "OtherParliaments")
 
     # Remove NULL
-    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !.data$OtherParliaments == "NULL")
+    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
 
     # Define a function to extract data
     extract_other_parliaments <- function(other_parliaments) {
         other_parliaments <- purrr::map_df(other_parliaments$`@Member_Id`, function(member) {
             mnis_id <- member
-            other_parliaments <- dplyr::filter(other_parliaments, .data$`@Member_Id` == mnis_id)
+            other_parliaments <- dplyr::filter(other_parliaments, `@Member_Id` == mnis_id)
             other_parliaments <- purrr::map_df(other_parliaments$OtherParliaments$OtherParliament, function(member) {
                 other_parliaments <- tibble::tibble(
                     other_parliaments_mnis_id = member$`@Id`,
@@ -180,13 +180,13 @@ fetch_lords_contested_elections_raw <- function() {
     contested_elections_raw <-  fetch_query_data(house = HOUSE_LORDS, "ElectionsContested")
 
     # Remove NULL
-    contested_elections_raw <- dplyr::filter(contested_elections_raw, !.data$ElectionsContested == "NULL")
+    contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
 
     # Define a function to extract data
     extract_contested_elections <- function(contested_elections) {
         contested_elections <- purrr::map_df(contested_elections$`@Member_Id`, function(member) {
             mnis_id <- member
-            contested_elections <- dplyr::filter(contested_elections, .data$`@Member_Id` == mnis_id)
+            contested_elections <- dplyr::filter(contested_elections, `@Member_Id` == mnis_id)
             contested_elections <- purrr::map_df(contested_elections$ElectionsContested$ElectionContested, function(member) {
                 contested_elections <- tibble::tibble(
                     contested_election_mnis_id = member$Election$`@Id`,
@@ -227,7 +227,7 @@ fetch_lords_government_roles_raw <- function() {
     government_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "GovernmentPosts")
 
     # Remove NULL
-    government_roles_raw <- dplyr::filter(government_roles_raw, !.data$GovernmentPosts == "NULL")
+    government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
 
     # Extract data
     government_roles <- extract_data_output(
@@ -266,7 +266,7 @@ fetch_lords_opposition_roles_raw <- function() {
     opposition_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "OppositionPosts")
 
     # Remove NULL
-    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !.data$OppositionPosts == "NULL")
+    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
 
     # Extract data
     opposition_roles <- extract_data_output(
@@ -305,7 +305,7 @@ fetch_lords_parliamentary_roles_raw <- function() {
     parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "ParliamentaryPosts")
 
     # Remove NULL
-    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !.data$ParliamentaryPosts == "NULL")
+    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
 
     # Extract data
     parliamentary_roles <- extract_data_output(
@@ -344,7 +344,7 @@ fetch_lords_maiden_speeches_raw <- function() {
     maiden_speeches_raw <-  fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
 
     # Remove NULL
-    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !.data$MaidenSpeeches == "NULL")
+    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !MaidenSpeeches == "NULL")
 
     # Extract data
     maiden_speeches <- extract_data_output(
@@ -360,7 +360,7 @@ fetch_lords_maiden_speeches_raw <- function() {
 
     # Tidy
     maiden_speeches$maiden_speech_date <- as.Date(maiden_speeches$maiden_speech_date)
-    maiden_speeches <- maiden_speeches %>% dplyr::filter(.data$maiden_speech_house == "Lords")
+    maiden_speeches <- maiden_speeches %>% dplyr::filter(maiden_speech_house == "Lords")
 
     # Combine
     maiden_speeches <- process_lords_output(maiden_speeches)
@@ -382,7 +382,7 @@ fetch_lords_addresses_raw <- function() {
     addresses_raw <-  fetch_query_data(house = HOUSE_LORDS, "Addresses")
 
     # Remove NULL
-    addresses_raw <- dplyr::filter(addresses_raw, !.data$Addresses == "NULL")
+    addresses_raw <- dplyr::filter(addresses_raw, !Addresses == "NULL")
 
     # Extract data
     addresses <- extract_data_output(

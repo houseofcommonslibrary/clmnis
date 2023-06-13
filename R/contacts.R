@@ -23,8 +23,8 @@ fetch_members_office_addresses <- function(
 
     # Fetch office addresses for members
     offices <- fetch_addresses() %>%
-        dplyr::filter(.data$address_is_physical) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(address_is_physical) %>%
+        dplyr::filter(! is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -40,7 +40,7 @@ fetch_members_office_addresses <- function(
             .data$postcode)
 
     # Filter office addresses for the given members
-    offices %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    offices %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Email addresses -------------------------------------------------------------
@@ -66,8 +66,8 @@ fetch_members_email_addresses <- function(
 
     # Fetch email addresses for members
     emails <- fetch_addresses() %>%
-        dplyr::filter(.data$address_is_physical) %>%
-        dplyr::filter(! is.na(.data$email)) %>%
+        dplyr::filter(address_is_physical) %>%
+        dplyr::filter(! is.na(email)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -77,7 +77,7 @@ fetch_members_email_addresses <- function(
             .data$email)
 
     # Filter email addresses for the given members
-    emails %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    emails %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Phone numbers ---------------------------------------------------------------
@@ -103,8 +103,8 @@ fetch_members_phone_numbers <- function(
 
     # Fetch phone numbers for members
     phones <- fetch_addresses() %>%
-        dplyr::filter(.data$address_is_physical) %>%
-        dplyr::filter(! is.na(.data$phone)) %>%
+        dplyr::filter(address_is_physical) %>%
+        dplyr::filter(! is.na(phone)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -114,7 +114,7 @@ fetch_members_phone_numbers <- function(
             .data$phone)
 
     # Filter phone numbers for the given members
-    phones %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    phones %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Fax numbers -----------------------------------------------------------------
@@ -140,8 +140,8 @@ fetch_members_fax_numbers <- function(
 
     # Fetch fax numbers for members
     faxes <- fetch_addresses() %>%
-        dplyr::filter(.data$address_is_physical) %>%
-        dplyr::filter(! is.na(.data$fax)) %>%
+        dplyr::filter(address_is_physical) %>%
+        dplyr::filter(! is.na(fax)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -151,7 +151,7 @@ fetch_members_fax_numbers <- function(
             .data$fax)
 
     # Filter fax numbers for the given members
-    faxes %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    faxes %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Websites --------------------------------------------------------------------
@@ -190,7 +190,7 @@ fetch_members_websites <- function(
             url = .data$address_1)
 
     # Filter websites for the given members
-    websites %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    websites %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Blogs -----------------------------------------------------------------------
@@ -216,8 +216,8 @@ fetch_members_blogs <- function(
 
     # Fetch blogs for members
     blogs <- fetch_addresses() %>%
-        dplyr::filter(.data$address_type_mnis_id == 10) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(address_type_mnis_id == 10) %>%
+        dplyr::filter(! is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -227,7 +227,7 @@ fetch_members_blogs <- function(
             url = .data$address_1)
 
     # Filter blogs for the given members
-    blogs %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    blogs %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Twitter ---------------------------------------------------------------------
@@ -253,8 +253,8 @@ fetch_members_twitter <- function(
 
     # Fetch Twitter accounts for members
     accounts <- fetch_addresses() %>%
-        dplyr::filter(.data$address_type_mnis_id == 7) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(address_type_mnis_id == 7) %>%
+        dplyr::filter(! is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -278,7 +278,7 @@ fetch_members_twitter <- function(
         })
 
     # Filter Twitter accounts for the given members
-    accounts %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    accounts %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Instagram -------------------------------------------------------------------
@@ -304,8 +304,8 @@ fetch_members_instagram <- function(
 
     # Fetch Instagram accounts for members
     accounts <- fetch_addresses() %>%
-        dplyr::filter(.data$address_type_mnis_id == 12) %>%
-        dplyr::filter(! is.na(.data$address_1)) %>%
+        dplyr::filter(address_type_mnis_id == 12) %>%
+        dplyr::filter(! is.na(address_1)) %>%
         dplyr::select(
             .data$mnis_id,
             .data$given_name,
@@ -331,7 +331,7 @@ fetch_members_instagram <- function(
         })
 
     # Filter Instagram accounts for the given members
-    accounts %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    accounts %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
 
 # Facebook --------------------------------------------------------------------
@@ -384,5 +384,5 @@ fetch_members_facebook <- function(
         })
 
     # Filter Facebook accounts for the given members
-    accounts %>% dplyr::filter(.data$mnis_id %in% members$mnis_id)
+    accounts %>% dplyr::filter(mnis_id %in% members$mnis_id)
 }
