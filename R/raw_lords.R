@@ -227,7 +227,12 @@ fetch_lords_government_roles_raw <- function() {
     government_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "GovernmentPosts")
 
     # Remove NULL
-    government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
+   # government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
+
+    # Remove NULL safely
+    government_roles_raw$government_post_flag <-  purrr::map(government_roles_raw$GovernmentPosts, ~.x != "NULL")[[1]]
+    government_roles_raw <- dplyr::filter(government_roles_raw, government_post_flag) %>%
+        dplyr::select(-government_post_flag)
 
     # Extract data
     government_roles <- extract_data_output(
@@ -266,8 +271,11 @@ fetch_lords_opposition_roles_raw <- function() {
     opposition_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "OppositionPosts")
 
     # Remove NULL
-    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
+    #opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
 
+    opposition_roles_raw$opposition_post_flag <-  purrr::map(opposition_roles_raw$OppositionPosts, ~.x != "NULL")[[1]]
+    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, opposition_post_flag) %>%
+        dplyr::select(-opposition_post_flag)
     # Extract data
     opposition_roles <- extract_data_output(
         opposition_roles_raw,
