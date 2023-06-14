@@ -86,7 +86,11 @@ fetch_lords_party_memberships_raw <- function() {
     party_memberships_raw <- fetch_query_data(house = HOUSE_LORDS, "Parties")
 
     # Remove NULL
-    party_memberships_raw <- dplyr::filter(party_memberships_raw, !Parties == "NULL")
+   # party_memberships_raw <- dplyr::filter(party_memberships_raw, !Parties == "NULL")
+    party_memberships_raw$null_flag <- purrr::map(party_memberships_raw$Parties,
+                                                  ~.x != "NULL")[[1]]
+    party_memberships_raw <- dplyr::filter(party_memberships_raw, null_flag) %>%
+        dplyr::select(-null_flag)
 
     # Define a function to extract data output for each MP
     extract_party_memberships <- function(memberships) {
@@ -133,7 +137,12 @@ fetch_lords_other_parliaments_raw <- function() {
     other_parliaments_raw <-  fetch_query_data(house = HOUSE_LORDS, "OtherParliaments")
 
     # Remove NULL
-    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
+    #other_parliaments_raw <- dplyr::filter(other_parliaments_raw, !OtherParliaments == "NULL")
+
+    other_parliaments_raw$null_flag <- purrr::map(other_parliaments_raw$OtherParliaments,
+                                                  ~.x != "NULL")[[1]]
+    other_parliaments_raw <- dplyr::filter(other_parliaments_raw, null_flag) %>%
+        dplyr::select(-null_flag)
 
     # Define a function to extract data
     extract_other_parliaments <- function(other_parliaments) {
@@ -180,8 +189,11 @@ fetch_lords_contested_elections_raw <- function() {
     contested_elections_raw <-  fetch_query_data(house = HOUSE_LORDS, "ElectionsContested")
 
     # Remove NULL
-    contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
-
+    #contested_elections_raw <- dplyr::filter(contested_elections_raw, !ElectionsContested == "NULL")
+    contested_elections_raw$null_flag <- purrr::map(contested_elections_raw$ElectionsContested,
+                                             ~.x != "NULL")[[1]]
+    contested_elections_raw <- dplyr::filter(contested_elections_raw, null_flag) %>%
+        dplyr::select(-null_flag)
     # Define a function to extract data
     extract_contested_elections <- function(contested_elections) {
         contested_elections <- purrr::map_df(contested_elections$`@Member_Id`, function(member) {
@@ -230,9 +242,10 @@ fetch_lords_government_roles_raw <- function() {
    # government_roles_raw <- dplyr::filter(government_roles_raw, !GovernmentPosts == "NULL")
 
     # Remove NULL safely
-    government_roles_raw$government_post_flag <-  purrr::map(government_roles_raw$GovernmentPosts, ~.x != "NULL")[[1]]
-    government_roles_raw <- dplyr::filter(government_roles_raw, government_post_flag) %>%
-        dplyr::select(-government_post_flag)
+    government_roles_raw$null_flag <-  purrr::map(government_roles_raw$GovernmentPosts,
+                                                             ~.x != "NULL")[[1]]
+    government_roles_raw <- dplyr::filter(government_roles_raw, null_flag) %>%
+        dplyr::select(-null_flag)
 
     # Extract data
     government_roles <- extract_data_output(
@@ -273,9 +286,9 @@ fetch_lords_opposition_roles_raw <- function() {
     # Remove NULL
     #opposition_roles_raw <- dplyr::filter(opposition_roles_raw, !OppositionPosts == "NULL")
 
-    opposition_roles_raw$opposition_post_flag <-  purrr::map(opposition_roles_raw$OppositionPosts, ~.x != "NULL")[[1]]
-    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, opposition_post_flag) %>%
-        dplyr::select(-opposition_post_flag)
+    opposition_roles_raw$null_flag <-  purrr::map(opposition_roles_raw$OppositionPosts, ~.x != "NULL")[[1]]
+    opposition_roles_raw <- dplyr::filter(opposition_roles_raw, null_flag) %>%
+        dplyr::select(-null_flag)
     # Extract data
     opposition_roles <- extract_data_output(
         opposition_roles_raw,
@@ -313,7 +326,10 @@ fetch_lords_parliamentary_roles_raw <- function() {
     parliamentary_roles_raw <-  fetch_query_data(house = HOUSE_LORDS, "ParliamentaryPosts")
 
     # Remove NULL
-    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
+    #parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, !ParliamentaryPosts == "NULL")
+    parliamentary_roles_raw$null_flag <- purrr::map(parliamentary_roles_raw$ParliamentaryPosts, ~.x != "NULL")[[1]]
+    parliamentary_roles_raw <- dplyr::filter(parliamentary_roles_raw, null_flag) %>%
+        dplyr::select(-null_flag)
 
     # Extract data
     parliamentary_roles <- extract_data_output(
@@ -352,7 +368,10 @@ fetch_lords_maiden_speeches_raw <- function() {
     maiden_speeches_raw <-  fetch_query_data(house = HOUSE_LORDS, "MaidenSpeeches")
 
     # Remove NULL
-    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !MaidenSpeeches == "NULL")
+    #maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, !MaidenSpeeches == "NULL")
+    maiden_speeches_raw$null_flag <- purrr::map(maiden_speeches_raw$MaidenSpeeches, ~.x != "NULL")[[1]]
+    maiden_speeches_raw <- dplyr::filter(maiden_speeches_raw, null_flag)%>%
+        dplyr::select(-null_flag)
 
     # Extract data
     maiden_speeches <- extract_data_output(
@@ -390,7 +409,10 @@ fetch_lords_addresses_raw <- function() {
     addresses_raw <-  fetch_query_data(house = HOUSE_LORDS, "Addresses")
 
     # Remove NULL
-    addresses_raw <- dplyr::filter(addresses_raw, !Addresses == "NULL")
+    #addresses_raw <- dplyr::filter(addresses_raw, !Addresses == "NULL")
+    addresses_raw$null_flag <- purrr::map(addresses_raw$Addresses, ~.x != "NULL")[[1]]
+    addresses_raw <- dplyr::filter(addresses_raw, null_flag) %>%
+        dplyr::select(-null_flag)
 
     # Extract data
     addresses <- extract_data_output(
