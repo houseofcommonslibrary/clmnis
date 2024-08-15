@@ -35,7 +35,7 @@ Some MP functions have an optional argument called ```while_mp```, which filters
 
 __fetch_mps__
 
-Fetch a dataframe of key details about each MP, with one row per MP. This dataframe contains summary details for each MP, such as names, gender, and dates of birth and death.
+Fetch a dataframe of key details about each MP, with one row per MP. This dataframe contains summary details for each MP, such as names, gender, and dates of death.
 
 ```r
 clmnis::fetch_mps(from_date = NA, to_date = NA, on_date = NA)
