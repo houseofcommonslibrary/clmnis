@@ -35,4 +35,10 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
+# MacOS
 .DS_Store
+
+# Renv
+.Rprofile
+renv.lock
+renv/

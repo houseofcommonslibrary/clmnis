@@ -229,18 +229,24 @@ filter_memberships <- function(
     # Apply the function to each combination of target and filter memberships
     tm_fm["in_membership"] <- apply(tm_fm, 1, in_fm_func)
 
+    # Summarise the match status for each combination of entity and target
+    # membership id: membership ids identify things like posts and parties,
+    # which can be shared by many people, so the match status must be
+    # summarised per entity to filter each person's memberships separately
     match_status <- tm_fm %>%
-        dplyr::group_by(.data$tm_id_col) %>%
-        dplyr::summarise(in_membership = any(.data$in_membership))
+        dplyr::group_by(.data$join_col, .data$tm_id_col) %>%
+        dplyr::summarise(in_membership = any(.data$in_membership)) %>%
+        dplyr::ungroup()
 
-    # Restore the actual target membership id column name for joining
-    colnames(match_status) <- c(tm_id_col, "in_membership")
+    # Restore the actual join and target membership id column names for
+    # joining
+    colnames(match_status) <- c(join_col, tm_id_col, "in_membership")
 
     # Join the match status with the original target memberships data
     tm_fm_status <- dplyr::left_join(
         tm,
         match_status,
-        by = tm_id_col)
+        by = c(join_col, tm_id_col))
 
     # Return the target memberships after filtering
     tm_fm_status %>%

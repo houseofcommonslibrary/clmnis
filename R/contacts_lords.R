@@ -404,7 +404,7 @@ fetch_lords_facebook <- function(
     to_date = NA,
     on_date = NA) {
 
-    fetch_members_instagram(
+    fetch_members_facebook(
         fetch_lords,
         fetch_lords_addresses,
         from_date = from_date,
